@@ -38,4 +38,14 @@ document.addEventListener("DOMContentLoaded", function () {
       wrapper.appendChild(removeButton);
       inclusionsContainer.appendChild(wrapper);
   });
+
+  document.getElementById('package_image').addEventListener('change', function(event) {
+    let reader = new FileReader();
+    reader.onload = function() {
+        let imagePreview = document.getElementById('image-preview');
+        imagePreview.src = reader.result;
+        imagePreview.style.display = 'block';
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  });
 });

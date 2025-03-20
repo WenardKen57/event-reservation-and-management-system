@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('package_name', 255)->nullable(false);
             $table->text('description')->nullable(true);
             $table->decimal('total_price', 10, 2)->nullable(false);
-            $table->enum('package_type', ['event', 'meal'])->nullable(false);
+            $table->string('image')->nullable();
             $table->enum('event_type', ['wedding', 'birthday'])->nullable(false);
             $table->timestamps();
         });

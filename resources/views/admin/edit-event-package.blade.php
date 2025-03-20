@@ -81,7 +81,7 @@
     <div class="container">
         <h1>Edit Event Package</h1>
 
-        <form action="{{ route('admin.update-event-package', $package->id) }}" method="POST">
+        <form action="{{ route('admin.update-event-package', $package->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -100,6 +100,19 @@
                 <option value="birthday" {{ $package->event_type == 'birthday' ? 'selected' : '' }}>Birthday</option>
                 <option value="others" {{ $package->event_type == 'others' ? 'selected' : '' }}>Others</option>
             </select>
+
+             <!-- Display Current Image -->
+             @if ($package->image)
+                <div>
+                    <p>Current Image:</p>
+                    <img src="{{ asset('storage/' . $package->image) }}" alt="Event Package Image" width="150">
+                </div>
+            @endif
+
+
+            <!-- File Upload -->
+            <label for="image">Upload New Image:</label>
+            <input type="file" name="image" accept="image/*">
 
             <h3>Inclusions</h3>
             <div id="inclusions-container">
@@ -122,22 +135,23 @@
 
     <script>
         document.getElementById('add-inclusion').addEventListener('click', function() {
-            let container = document.getElementById('inclusions-container');
-            let index = container.children.length;
+        let container = document.getElementById('inclusions-container');
+        let index = container.children.length;
 
-            let newInclusion = document.createElement('div');
-            newInclusion.classList.add('inclusion-item');
-            newInclusion.innerHTML = `
-                <input type="text" name="new_inclusions[${index}][name]" placeholder="Inclusion Name" required>
-                <input type="text" name="new_inclusions[${index}][description]" placeholder="Inclusion Description" required>
-                <button type="button" class="remove-inclusion" onclick="removeInclusion(this)">X</button>
-            `;
-            container.appendChild(newInclusion);
-        });
+        let newInclusion = document.createElement('div');
+        newInclusion.classList.add('inclusion-item');
+        newInclusion.innerHTML = `
+            <input type="text" name="new_inclusions[${index}][item_name]" placeholder="Item Name" required>
+            <input type="number" name="new_inclusions[${index}][quantity]" placeholder="Quantity" required>
+            <button type="button" class="remove-inclusion" onclick="removeInclusion(this)">X</button>
+        `;
+        container.appendChild(newInclusion);
+    });
 
-        function removeInclusion(button) {
-            button.parentElement.remove();
-        }
+    function removeInclusion(button) {
+        button.parentElement.remove();
+    }
+
     </script>
 
 </body>

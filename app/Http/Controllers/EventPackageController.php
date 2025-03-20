@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\EventPackageInclusion;
 use App\Models\EventPackage;
+use Storage;
 
 class EventPackageController extends Controller
 {
@@ -22,13 +23,20 @@ class EventPackageController extends Controller
             'quantities.*' => 'required|integer|min:1', // Each quantity must be a number
         ]);
 
+        // Handle Image Upload
+        if ($request->hasFile('package_image')) {
+            $imagePath = $request->file('package_image')->store('package_images', 'public');
+        } else {
+            $imagePath = null;
+        }
+
         // Create the Event Package
         $package = EventPackage::create([
             'package_name' => $request->package_name,
             'description' => $request->description,
             'total_price' => $request->total_price,
             'event_type' => $request->event_type,
-
+            'image' => $imagePath,
         ]);
 
         // Save the inclusions
@@ -67,6 +75,21 @@ class EventPackageController extends Controller
         ]);
 
         $package = EventPackage::findOrFail($id);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+
+            
+            // Delete old image if exists
+            if ($package->image) {
+                Storage::delete('public/' . $package->image);
+            }
+
+            // Store new image and update path
+            $imagePath = $request->file('image')->store('package_images', 'public');
+            $package->image = $imagePath;
+        }
+
         $package->update([
             'package_name' => $request->package_name,
             'description' => $request->description,
