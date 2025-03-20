@@ -1,12 +1,19 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-white leading-tight bg-blue-600 p-4 rounded-lg shadow-md">
             {{ __('Customer Dashboard') }}
         </h2>
     </x-slot>
 
-    <ul>
-        <li><button><a href="{{ route('customer.transaction.create') }}">Make a transaction</a></button></li>
-    </ul>
+    <div class="flex justify-center mt-8">
+        <ul class="bg-white p-6 rounded-lg shadow-md w-96 text-center">
+            <li>
+                <a href="{{ route('customer.transaction.create') }}" 
+                   class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition duration-300">
+                    Make a Transaction
+                </a>
+            </li>
+        </ul>
+    </div>
 
 </x-app-layout>
