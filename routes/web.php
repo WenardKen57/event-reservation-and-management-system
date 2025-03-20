@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CustomerController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,5 +35,22 @@ Route::post('/email/verification-notification', function (Request $request) {
 
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+
+    Route::get('admin/dashboard', [AdminController::class, 'dashboard'])
+    ->name('admin.dashboard');
+
+});
+
+Route::middleware(['auth', 'role:customer'])->group(function () {
+
+    Route::get('customer/dashboard', [CustomerController::class, 'dashboard'])
+    ->name('customer.dashboard');
+
+});
+
+
 
 require __DIR__.'/auth.php';
