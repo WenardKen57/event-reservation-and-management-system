@@ -19,4 +19,10 @@ class EventReservation extends Model
         'event_package_id',
         'total_price',
     ];
+
+    public function package()
+    {
+        return $this->belongsTo(EventPackage::class, 'event_package_id');
+    }
+
 }

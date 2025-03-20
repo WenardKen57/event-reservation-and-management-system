@@ -55,23 +55,6 @@
                 </table>
             </section>
 
-            <!--
-            <section class="dashboard-content">
-                <div class="card">
-                    <h3>Total Packages</h3>
-                    <p>10</p>
-                </div>
-                <div class="card">
-                    <h3>New Orders</h3>
-                    <p>5</p>
-                </div>
-                <div class="card">
-                    <h3>Customers</h3>
-                    <p>120</p>
-                </div>
-            </section>
-
--->
         </main>
     </div>
 

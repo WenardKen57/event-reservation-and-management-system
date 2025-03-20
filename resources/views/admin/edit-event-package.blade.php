@@ -58,6 +58,22 @@
         .back-link:hover {
             text-decoration: underline;
         }
+        .inclusion-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .remove-inclusion {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .remove-inclusion:hover {
+            background: darkred;
+        }
     </style>
 </head>
 <body>
@@ -85,11 +101,44 @@
                 <option value="others" {{ $package->event_type == 'others' ? 'selected' : '' }}>Others</option>
             </select>
 
+            <h3>Inclusions</h3>
+            <div id="inclusions-container">
+                @foreach($package->inclusions as $inclusion)
+                    <div class="inclusion-item">
+                        <input type="text" name="inclusions[{{ $inclusion->id }}][name]" value="{{ $inclusion->item_name }}" required>
+                        <input type="text" name="inclusions[{{ $inclusion->id }}][description]" value="{{ $inclusion->quantity }}" required>
+                        <button type="button" class="remove-inclusion" onclick="removeInclusion(this)">X</button>
+                    </div>
+                @endforeach
+            </div>
+
+            <button type="button" id="add-inclusion">Add Inclusion</button>
+
             <button type="submit">Update Package</button>
         </form>
 
         <a href="{{ route('admin.dashboard') }}" class="back-link">Back to Dashboard</a>
     </div>
+
+    <script>
+        document.getElementById('add-inclusion').addEventListener('click', function() {
+            let container = document.getElementById('inclusions-container');
+            let index = container.children.length;
+
+            let newInclusion = document.createElement('div');
+            newInclusion.classList.add('inclusion-item');
+            newInclusion.innerHTML = `
+                <input type="text" name="new_inclusions[${index}][name]" placeholder="Inclusion Name" required>
+                <input type="text" name="new_inclusions[${index}][description]" placeholder="Inclusion Description" required>
+                <button type="button" class="remove-inclusion" onclick="removeInclusion(this)">X</button>
+            `;
+            container.appendChild(newInclusion);
+        });
+
+        function removeInclusion(button) {
+            button.parentElement.remove();
+        }
+    </script>
 
 </body>
 </html>

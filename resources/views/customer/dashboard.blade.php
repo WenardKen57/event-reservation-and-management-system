@@ -15,4 +15,38 @@
             </li>
         </ul>
     </div>
+
+    <div class="max-w-5xl mx-auto mt-8 bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-lg font-semibold mb-4">Your Reservations</h3>
+
+        @if ($reservations->isEmpty())
+            <p class="text-gray-500">No reservations found.</p>
+        @else
+            <table class="w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="border p-2">Event Name</th>
+                        <th class="border p-2">Date</th>
+                        <th class="border p-2">Package</th>
+                        <th class="border p-2">Guests</th>
+                        <th class="border p-2">Total Price</th>
+                        <th class="border p-2">Status</th>
+                        <th class="border p-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($reservations as $reservation)
+                        <tr>
+                            <td class="border p-2">{{ $reservation->event_name }}</td>
+                            <td class="border p-2">{{ $reservation->event_date }}</td>
+                            <td class="border p-2">{{ $reservation->package->package_name }}</td>
+                            <td class="border p-2">{{ $reservation->guests }}</td>
+                            <td class="border p-2">${{ number_format($reservation->total_price, 2) }}</td>
+                            <td class="border p-2 text-blue-600 font-semibold">{{$reservation->status}}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
+    </div>
 </x-app-layout>
