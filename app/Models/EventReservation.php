@@ -10,7 +10,8 @@ class EventReservation extends Model
     use HasFactory;
 
     protected $fillable = [
-        'transaction_id',
+        'user_id',
+        'event_package_id',
         'event_name',
         'event_date',
         'event_time',

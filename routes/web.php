@@ -6,7 +6,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\CustomerTransactionController;
+use App\Http\Controllers\CustomerReservationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -65,6 +65,9 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 
     Route::get('customer/dashboard', [CustomerController::class, 'dashboard'])
     ->name('customer.dashboard');
+
+    Route::get('/reservation/create', [CustomerReservationController::class, 'create'])->name('customer.reservation.create');
+    Route::post('/reservation/store', [CustomerReservationController::class, 'store'])->name('customer.reservation.store');
 
 });
 
