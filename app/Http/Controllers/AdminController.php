@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Transaction;
+use App\Models\EventPackage;
 
 class AdminController extends Controller
 {
     public function dashboard() {
-        $transactions = Transaction::all();
-        return view('admin.dashboard', compact('transactions'));
+        $packages = EventPackage::all();
+        return view('admin.dashboard', compact('packages'));
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EventPackageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +43,21 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('admin/dashboard', [AdminController::class, 'dashboard'])
     ->name('admin.dashboard');
+
+    Route::get('/create-event-package', [EventPackageController::class, 'create'])
+    ->name('admin.create-event-package');
+
+    Route::post('/store-event-package', [EventPackageController::class, 'store'])
+    ->name('admin.store-event-package');
+
+    Route::delete('/admin/event-package/{id}', [EventPackageController::class, 'destroyEventPackage'])
+    ->name('admin.delete-event-package');
+
+    Route::get('/admin/event-package/{id}/edit', [EventPackageController::class, 'editEventPackage'])
+    ->name('admin.edit-event-package');
+
+    Route::put('/admin/event-package/{id}', [EventPackageController::class, 'updateEventPackage'])
+    ->name('admin.update-event-package');
 
 });
 
