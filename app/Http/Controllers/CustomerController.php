@@ -10,7 +10,4 @@ class CustomerController extends Controller
         return view('customer.dashboard');
     }
 
-    public function createTransaction() {
-        return view('customer.transaction');
-    }
 }

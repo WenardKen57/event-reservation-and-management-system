@@ -5,6 +5,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CustomerTransactionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -49,8 +50,11 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('customer/dashboard', [CustomerController::class, 'dashboard'])
     ->name('customer.dashboard');
 
-    Route::get('transactions', [CustomerController::class, 'createTransaction'])
+    Route::get('transactions', [CustomerTransactionController::class, 'create'])
     ->name('customer.transaction.create');
+
+    Route::post('transactions', [CustomerTransactionController::class, 'store'])
+    ->name('customer.transaction.store');
 
 });
 
