@@ -40,9 +40,22 @@
                             <td class="border p-2">{{ $reservation->event_name }}</td>
                             <td class="border p-2">{{ $reservation->event_date }}</td>
                             <td class="border p-2">{{ $reservation->package->package_name }}</td>
-                            <td class="border p-2">{{ $reservation->guests }}</td>
+                            <td class="border p-2">{{ $reservation->guest }}</td>
                             <td class="border p-2">${{ number_format($reservation->total_price, 2) }}</td>
                             <td class="border p-2 text-blue-600 font-semibold">{{$reservation->status}}</td>
+                            <td class="border p-2">
+                                @if ($reservation->status !== 'cancelled')
+                                    <form action="{{ route('customer.reservation.cancel', $reservation->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-300">
+                                            Cancel
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="text-gray-500">Cancelled</span>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

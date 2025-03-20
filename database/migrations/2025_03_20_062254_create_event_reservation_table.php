@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('total_price', 10, 2);
             $table->integer('guest')->default(0);
             $table->text('special_request')->nullable();
-            $table->enum('status', ['pending', 'completed'])->default('pending');
+            $table->enum('status', ['pending', 'cancelled', 'approved', 'disapproved', 'completed'])->default('pending');
             $table->timestamps();
         });
     }

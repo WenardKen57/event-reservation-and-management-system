@@ -36,11 +36,25 @@ class CustomerReservationController extends Controller
             'event_date' => $request->event_date,
             'event_time' => $request->event_time,
             'event_location' => $request->event_location,
-            'guests' => $request->guests,
+            'guest' => $request->guests,
             'event_type' => $request->event_type,
             'special_requests' => $request->special_requests,
         ]);
 
         return redirect()->route('customer.dashboard')->with('success', 'Reservation created successfully!');
     }
+
+
+    public function cancel($id)
+    {
+        $reservation = EventReservation::findOrFail($id);
+
+        //dd($reservation);
+
+        // Update the status to "Cancelled"
+        $reservation->update(['status' => 'cancelled']);
+
+        return redirect()->route('customer.dashboard')->with('success', 'Reservation cancelled successfully.');
+    }
+
 }

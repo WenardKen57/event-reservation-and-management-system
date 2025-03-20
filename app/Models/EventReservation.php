@@ -16,8 +16,10 @@ class EventReservation extends Model
         'event_date',
         'event_time',
         'event_location',
+        'guest',
         'event_package_id',
         'total_price',
+        'status',
     ];
 
     public function package()

@@ -68,7 +68,8 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 
     Route::get('/reservation/create', [CustomerReservationController::class, 'create'])->name('customer.reservation.create');
     Route::post('/reservation/store', [CustomerReservationController::class, 'store'])->name('customer.reservation.store');
-
+    Route::delete('/reservation/{id}/cancel', [CustomerReservationController::class, 'cancel'])
+    ->name('customer.reservation.cancel');
 });
 
 
