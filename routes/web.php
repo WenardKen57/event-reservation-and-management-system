@@ -49,6 +49,9 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('customer/dashboard', [CustomerController::class, 'dashboard'])
     ->name('customer.dashboard');
 
+    Route::get('transactions', [CustomerController::class, 'createTransaction'])
+    ->name('customer.transaction.create');
+
 });
 
 

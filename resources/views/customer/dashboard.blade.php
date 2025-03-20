@@ -6,6 +6,7 @@
     </x-slot>
 
     <ul>
-        <li><button><a href="">Make transaction</a></button></li>
+        <li><button><a href="{{ route('customer.transaction.create') }}">Make a transaction</a></button></li>
     </ul>
+
 </x-app-layout>
