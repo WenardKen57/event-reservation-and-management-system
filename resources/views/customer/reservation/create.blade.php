@@ -10,15 +10,20 @@
             @csrf
 
             <label class="block font-semibold mt-4">Select a Package:</label>
-            <select name="package_id" class="w-full border-gray-300 p-2 rounded-md" required>
-                <option value="">-- Select a Package --</option>
+            <select name="package_id" id="package-select" class="w-full border-gray-300 p-2 rounded-md" required>
+                <option value="" data-image="">-- Select a Package --</option>
                 @foreach ($packages as $package)
-                    <option value="{{ $package->id }}">
+                    <option value="{{ $package->id }}" data-image="{{ asset('storage/' . $package->image) }}">
                         {{ $package->package_name }} - ${{ number_format($package->total_price, 2) }}
                     </option>
                 @endforeach
             </select>
-            
+
+            <!-- Display Package Image -->
+            <div class="mt-4">
+                <img id="package-image" src="" alt="Selected Package Image" class="w-64 h-40 object-cover hidden">
+            </div>
+
             <label class="block font-semibold mt-4">Event Name:</label>
             <input type="text" name="event_name" class="w-full border-gray-300 p-2 rounded-md" required>
 
@@ -51,4 +56,20 @@
             </button>
         </form>
     </div>
+
+    <!-- JavaScript for Dynamic Image Display -->
+    <script>
+        document.getElementById('package-select').addEventListener('change', function() {
+            let selectedOption = this.options[this.selectedIndex];
+            let imageUrl = selectedOption.getAttribute('data-image');
+            let packageImage = document.getElementById('package-image');
+
+            if (imageUrl) {
+                packageImage.src = imageUrl;
+                packageImage.classList.remove('hidden'); // Show image
+            } else {
+                packageImage.classList.add('hidden'); // Hide image if no selection
+            }
+        });
+    </script>
 </x-app-layout>
