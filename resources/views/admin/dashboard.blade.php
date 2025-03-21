@@ -6,6 +6,7 @@
             <ul class="nav-links">
                 <li><a href="#">Dashboard</a></li>
                 <li><a href="{{ route('admin.create-event-package') }}">Create Event Package</a></li>
+                <li><a href="{{ route('admin.available-dates.index') }}">Set available dates</a></li>
             </ul>
         </aside>
 
@@ -81,7 +82,7 @@
         /* Sidebar */
         .sidebar {
             width: 250px;
-            background: #007bff;
+            background: #007bff !important;
             padding: 20px;
             color: white;
             display: flex;

@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\EventReservation;
 use App\Models\EventPackage;
+use App\Models\AvailableDate;
 
 class CustomerReservationController extends Controller
 {
     public function create()
     {
+        $availableDates = AvailableDate::pluck('date')->toArray();
         $packages = EventPackage::all(); // Fetch all packages
-        return view('customer.reservation.create', compact('packages'));
+        return view('customer.reservation.create', compact('availableDates', 'packages'));
 
     }
 
@@ -21,10 +23,21 @@ class CustomerReservationController extends Controller
             'package_id' => 'required|exists:event_packages,id',
             'event_name' => 'required|string|max:255',
             'event_date' => 'required|date',
-            'guests' => 'required|integer|min:1',
+            'guests' => 'required|integer|min:1|max:100',
             'event_type' => 'required|string',
             'special_requests' => 'nullable|string',
-        ]);
+            'event_time' => [
+                'required',
+                'date_format:H:i',
+                function ($attribute, $value, $fail) {
+                    $hour = (int) date('H', strtotime($value)); // Get hour (24-hour format)
+                    if ($hour >= 23 || $hour < 6) {
+                        $fail('The event time cannot be between 11 PM and 6 AM.');
+                    }
+                },
+            ],
+            'package_image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048', // Validate image
+            ]);
 
         $package = EventPackage::findOrFail($request->package_id);
 

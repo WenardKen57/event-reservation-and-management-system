@@ -1,57 +1,91 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-white leading-tight bg-blue-600 p-4 shadow-md">
+        <h2 class="header-title">
             {{ __('Make an Event Reservation') }}
         </h2>
     </x-slot>
 
-    <div class="max-w-2xl mx-auto mt-8 bg-white p-6 rounded-lg shadow-md">
-        <form action="{{ route('customer.reservation.store') }}" method="POST">
+    <div class="container">
+        <form action="{{ route('customer.reservation.store') }}" method="POST" class="form-container">
             @csrf
 
-            <label class="block font-semibold mt-4">Select a Package:</label>
-            <select name="package_id" id="package-select" class="w-full border-gray-300 p-2 rounded-md" required>
+            <!-- Package Selection -->
+            <label class="form-label">Select a Package:</label>
+            <select name="package_id" id="package-select" class="form-select" required>
                 <option value="" data-image="">-- Select a Package --</option>
                 @foreach ($packages as $package)
-                    <option value="{{ $package->id }}" data-image="{{ asset('storage/' . $package->image) }}">
+                    <option value="{{ $package->id }}" data-image="{{ asset('storage/' . $package->image) }}" 
+                        {{ old('package_id') == $package->id ? 'selected' : '' }}>
                         {{ $package->package_name }} - ${{ number_format($package->total_price, 2) }}
                     </option>
                 @endforeach
             </select>
+            @error('package_id')
+                <p class="error-message">{{ $message }}</p>
+            @enderror
 
             <!-- Display Package Image -->
-            <div class="mt-4">
-                <img id="package-image" src="" alt="Selected Package Image" class="w-64 h-40 object-cover hidden">
+            <div class="image-container">
+                <img id="package-image" src="" alt="Selected Package Image" class="hidden">
             </div>
 
-            <label class="block font-semibold mt-4">Event Name:</label>
-            <input type="text" name="event_name" class="w-full border-gray-300 p-2 rounded-md" required>
+            <!-- Event Details -->
+            <label class="form-label">Event Name:</label>
+            <input type="text" name="event_name" class="form-input" value="{{ old('event_name') }}" required>
+            @error('event_name')
+                <p class="error-message">{{ $message }}</p>
+            @enderror
 
-            <label class="block font-semibold mt-4">Event Date:</label>
-            <input type="date" name="event_date" class="w-full border-gray-300 p-2 rounded-md" required>
-
-            <label class="block font-semibold mt-4">Event Time:</label>
-            <input type="time" name="event_time" class="w-full border-gray-300 p-2 rounded-md" required>
-
-            <label class="block font-semibold mt-4">Event Location:</label>
-            <input type="text" name="event_location" class="w-full border-gray-300 p-2 rounded-md" required>
-
-            <label class="block font-semibold mt-4">Number of Guests:</label>
-            <input type="number" name="guests" class="w-full border-gray-300 p-2 rounded-md" required>
-
-            <label class="block font-semibold mt-4">Event Type:</label>
-            <select name="event_type" class="w-full border-gray-300 p-2 rounded-md">
-                <option value="wedding">Wedding</option>
-                <option value="birthday">Birthday</option>
-                <option value="corporate">Corporate Event</option>
-                <option value="others">Others</option>
+            <label class="form-label">Event Date:</label>
+            <select name="event_date" class="form-select" required>
+                <option value="">-- Select an Available Date --</option>
+                @foreach ($availableDates as $date)
+                    <option value="{{ $date }}" {{ old('event_date') == $date ? 'selected' : '' }}>
+                        {{ \Carbon\Carbon::parse($date)->format('F d, Y') }}
+                    </option>
+                @endforeach
             </select>
+            @error('event_date')
+                <p class="error-message">{{ $message }}</p>
+            @enderror
 
-            <label class="block font-semibold mt-4">Special Requests:</label>
-            <textarea name="special_requests" class="w-full border-gray-300 p-2 rounded-md"></textarea>
+            <label class="form-label">Event Time:</label>
+            <input type="time" name="event_time" class="form-input" value="{{ old('event_time') }}" required>
+            @error('event_time')
+                <p class="error-message">{{ $message }}</p>
+            @enderror
 
-            <button type="submit" 
-                class="mt-6 bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition duration-300">
+            <label class="form-label">Event Location:</label>
+            <input type="text" name="event_location" class="form-input" value="{{ old('event_location') }}" required>
+            @error('event_location')
+                <p class="error-message">{{ $message }}</p>
+            @enderror
+
+            <label class="form-label">Number of Guests:</label>
+            <input type="number" name="guests" class="form-input" value="{{ old('guests') }}" required>
+            @error('guests')
+                <p class="error-message">{{ $message }}</p>
+            @enderror
+
+            <label class="form-label">Event Type:</label>
+            <select name="event_type" class="form-select">
+                <option value="wedding" {{ old('event_type') == 'wedding' ? 'selected' : '' }}>Wedding</option>
+                <option value="birthday" {{ old('event_type') == 'birthday' ? 'selected' : '' }}>Birthday</option>
+                <option value="corporate" {{ old('event_type') == 'corporate' ? 'selected' : '' }}>Corporate Event</option>
+                <option value="others" {{ old('event_type') == 'others' ? 'selected' : '' }}>Others</option>
+            </select>
+            @error('event_type')
+                <p class="error-message">{{ $message }}</p>
+            @enderror
+
+            <label class="form-label">Special Requests:</label>
+            <textarea name="special_requests" class="form-textarea">{{ old('special_requests') }}</textarea>
+            @error('special_requests')
+                <p class="error-message">{{ $message }}</p>
+            @enderror
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-primary">
                 Submit Reservation
             </button>
         </form>
@@ -66,10 +100,110 @@
 
             if (imageUrl) {
                 packageImage.src = imageUrl;
-                packageImage.classList.remove('hidden'); // Show image
+                packageImage.classList.remove('hidden');
             } else {
-                packageImage.classList.add('hidden'); // Hide image if no selection
+                packageImage.classList.add('hidden');
             }
         });
     </script>
+
+    <style>
+        /* General Styling */
+        * {
+            font-family: 'Arial', sans-serif;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header */
+        .header-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            background-color: #2563eb;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form Container */
+        .container {
+            max-width: 70vw;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Form Fields */
+        .form-label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            transition: border 0.3s ease-in-out;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: #2563eb;
+            outline: none;
+            box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+        }
+
+        /* Submit Button */
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+            width: 100%;
+            display: block;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 15px;
+        }
+
+        .btn-primary:hover {
+            background-color: #1e40af;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .form-input, .form-select, .form-textarea {
+                font-size: 14px;
+            }
+        }
+    </style>
 </x-app-layout>

@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
       quantityInput.name = "quantities[]"; // Array for Laravel
       quantityInput.placeholder = "Qty";
       quantityInput.min = "1";
-      quantityInput.required = true;
+      quantityInput.required = false;
 
       // Remove Button
       let removeButton = document.createElement('button');

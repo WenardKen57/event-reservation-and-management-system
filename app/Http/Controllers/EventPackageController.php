@@ -19,8 +19,21 @@ class EventPackageController extends Controller
             'package_name' => 'required|string|max:255',
             'inclusions' => 'required|array', // Ensure it's an array
             'inclusions.*' => 'required|string|max:255', // Each inclusion must be a string
-            'quantities' => 'required|array',  // Must be an array
-            'quantities.*' => 'required|integer|min:1', // Each quantity must be a number
+            'quantities' => 'nullable|array',  // Must be an array
+            'quantities.*' => 'nullable|integer|min:1', // Each quantity must be a number
+            'event_time' => [
+                'required',
+                'date_format:H:i',
+                function ($attribute, $value, $fail) {
+                    $time = strtotime($value);
+                    $start = strtotime('23:00'); // 11 PM
+                    $end = strtotime('06:00');  // 6 AM
+
+                    if ($time >= $start || $time < $end) {
+                        $fail('The event time cannot be between 11 PM and 6 AM.');
+                    }
+                },
+            ],
         ]);
 
         // Handle Image Upload

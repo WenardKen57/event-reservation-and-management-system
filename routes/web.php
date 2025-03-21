@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerReservationController;
+use App\Http\Controllers\AvailableDateController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -59,6 +60,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/admin/event-package/{id}', [EventPackageController::class, 'updateEventPackage'])
     ->name('admin.update-event-package');
 
+    Route::get('/admin/available-dates', [AvailableDateController::class, 'index'])->name('admin.available-dates.index');
+    Route::post('/admin/available-dates', [AvailableDateController::class, 'store'])->name('admin.available-dates.store');
+    Route::delete('/admin/available-dates/{id}', [AvailableDateController::class, 'destroy'])->name('admin.available-dates.destroy');
+    
 });
 
 Route::middleware(['auth', 'role:customer'])->group(function () {
