@@ -22,6 +22,12 @@ class EventReservation extends Model
         'status',
     ];
 
+    // Define relationship with User (Customer)
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'customer_id');
+    }
+
     public function package()
     {
         return $this->belongsTo(EventPackage::class, 'event_package_id');

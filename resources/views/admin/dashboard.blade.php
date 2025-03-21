@@ -9,6 +9,8 @@
                 <li><a href="#">Dashboard</a></li>
                 <li><a href="{{ route('admin.create-event-package') }}">Create Event Package</a></li>
                 <li><a href="{{ route('admin.available-dates.index') }}">Set available dates</a></li>
+                <li><a href="#reservation-list">Pending reservations</a></li>
+                <li><a href="#approved-reservation-list">Approved reservations</a></li>
             </ul>
         </aside>
 
@@ -57,8 +59,76 @@
                     </tbody>
                 </table>
             </section>
-
             
+            <section id="reservation-list" class="reservation-list">
+            <h2>Pending Reservations</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>Event Name</th>
+                        <th>Date</th>
+                        <th>Package</th>
+                        <th>Guests</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($reservations->where('status', 'pending') as $reservation)
+                    <tr>
+                        <td>{{ $reservation->customer->name ?? 'N/A' }}</td>
+                        <td>{{ $reservation->event_name }}</td>
+                        <td>{{ $reservation->event_date }}</td>
+                        <td>{{ $reservation->package->package_name }}</td>
+                        <td>{{ $reservation->guest }}</td>
+                        <td>${{ number_format($reservation->total_price, 2) }}</td>
+                        <td class="status">{{ ucfirst($reservation->status) }}</td>
+                        <td>
+                            <!-- Approve Button -->
+                            <form action="{{ route('admin.approve-reservation', $reservation->id) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="btn-approve">Approve</button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </section>
+
+        <section id="approved-reservation-list" class="approved-reservation-list">
+            <h2>Approved Reservations</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>Event Name</th>
+                        <th>Date</th>
+                        <th>Package</th>
+                        <th>Guests</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($reservations->where('status', 'approved') as $reservation)
+                    <tr>
+                        <td>{{ $reservation->customer->name ?? 'N/A' }}</td>
+                        <td>{{ $reservation->event_name }}</td>
+                        <td>{{ $reservation->event_date }}</td>
+                        <td>{{ $reservation->package->package_name }}</td>
+                        <td>{{ $reservation->guest }}</td>
+                        <td>${{ number_format($reservation->total_price, 2) }}</td>
+                        <td class="status-approved">Approved</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </section>
+
 
         </main>
     </div>

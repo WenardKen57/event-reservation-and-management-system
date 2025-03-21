@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerReservationController;
 use App\Http\Controllers\AvailableDateController;
+use App\Http\Controllers\AdminReservationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -64,6 +65,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/available-dates', [AvailableDateController::class, 'store'])->name('admin.available-dates.store');
     Route::delete('/admin/available-dates/{id}', [AvailableDateController::class, 'destroy'])->name('admin.available-dates.destroy');
 
+
+    Route::patch('/admin/reservation/{id}/approve', [AdminReservationController::class, 'approve'])
+    ->name('admin.approve-reservation');
 });
 
 Route::middleware(['auth', 'role:customer'])->group(function () {

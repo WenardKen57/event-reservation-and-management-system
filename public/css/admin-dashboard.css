@@ -168,3 +168,49 @@ tbody tr:nth-child(even) {
 tbody tr:hover {
     background: #e9ecef;
 }
+
+/* General Button Styling */
+button, .btn-approve, .btn-delete {
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Approve Button */
+.btn-approve {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+.btn-approve:hover {
+  background-color: #388E3C;
+  transform: scale(1.05);
+}
+
+/* Delete Button */
+.btn-delete {
+  background-color: #F44336; /* Red */
+  color: white;
+}
+
+.btn-delete:hover {
+  background-color: #D32F2F;
+  transform: scale(1.05);
+}
+
+/* Disabled Button */
+.btn-disabled {
+  background-color: #BDBDBD; /* Grey */
+  color: white;
+  cursor: not-allowed;
+}
+
+/* Table Action Buttons */
+.reservation-table button {
+  margin: 5px;
+}
+
