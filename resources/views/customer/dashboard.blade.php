@@ -25,10 +25,15 @@
             </ul>
         </div>
 
-        <h3 class="section-title">Your Reservations</h3>
+        <!-- Approved Reservations Section -->
+        <h3 class="section-title">Approved Reservations</h3>
 
-        @if ($reservations->isEmpty())
-            <p class="no-reservations">No reservations found.</p>
+        @php
+            $approvedReservations = $reservations->where('status', 'approved');
+        @endphp
+
+        @if ($approvedReservations->isEmpty())
+            <p class="no-reservations">No approved reservations found.</p>
         @else
             <div class="table-container">
                 <table class="reservation-table">
@@ -36,6 +41,49 @@
                         <tr>
                             <th>Event Name</th>
                             <th>Date</th>
+                            <th>Time</th>
+                            <th>Location</th>
+                            <th>Package</th>
+                            <th>Guests</th>
+                            <th>Total Price</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($approvedReservations as $reservation)
+                            <tr>
+                                <td>{{ $reservation->event_name }}</td>
+                                <td>{{ $reservation->event_date }}</td>
+                                <td>{{ $reservation->event_time }}</td>
+                                <td>{{ $reservation->event_location }}</td>
+                                <td>{{ $reservation->package->package_name }}</td>
+                                <td>{{ $reservation->guest }}</td>
+                                <td class="price">${{ number_format($reservation->total_price, 2) }}</td>
+                                <td class="status approved">Approved</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
+
+        <!-- Pending & Cancelled Reservations Section -->
+        <h3 class="section-title">Pending & Cancelled Reservations</h3>
+
+        @php
+            $otherReservations = $reservations->whereIn('status', ['pending', 'cancelled']);
+        @endphp
+
+        @if ($otherReservations->isEmpty())
+            <p class="no-reservations">No pending or cancelled reservations found.</p>
+        @else
+            <div class="table-container">
+                <table class="reservation-table">
+                    <thead>
+                        <tr>
+                            <th>Event Name</th>
+                            <th>Date</th>
+                            <th>Time</th>
                             <th>Location</th>
                             <th>Package</th>
                             <th>Guests</th>
@@ -45,32 +93,26 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($reservations as $reservation)
+                        @foreach ($otherReservations as $reservation)
                             <tr>
                                 <td>{{ $reservation->event_name }}</td>
                                 <td>{{ $reservation->event_date }}</td>
+                                <td>{{ $reservation->event_time }}</td>
                                 <td>{{ $reservation->event_location }}</td>
                                 <td>{{ $reservation->package->package_name }}</td>
                                 <td>{{ $reservation->guest }}</td>
                                 <td class="price">${{ number_format($reservation->total_price, 2) }}</td>
-                                <td class="status">{{ ucfirst($reservation->status) }}</td>
+                                <td class="status {{ $reservation->status }}">{{ ucfirst($reservation->status) }}</td>
                                 <td>
-                                    @if ($reservation->status !== 'cancelled')
-                                        @if ($reservation->status === 'approved')
-                                            <h1>Approved</h1>
-                                        @else
-                                            <!-- Cancel Button -->
-                                            <form action="{{ route('customer.reservation.cancel', $reservation->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
+                                    @if ($reservation->status === 'pending')
+                                        <form action="{{ route('customer.reservation.cancel', $reservation->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn-red">
                                                 Cancel
                                             </button>
                                         </form>
-                                        @endif
-                                        
-                                    @else
-                                        <!-- Delete Button -->
+                                    @elseif ($reservation->status === 'cancelled')
                                         <form action="{{ route('customer.reservation.destroy', $reservation->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this reservation permanently?');">
                                             @csrf
                                             @method('DELETE')
@@ -86,5 +128,6 @@
                 </table>
             </div>
         @endif
+
     </div>
 </x-app-layout>
