@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class EventReservation extends Model
 {
@@ -31,6 +32,24 @@ class EventReservation extends Model
     public function package()
     {
         return $this->belongsTo(EventPackage::class, 'event_package_id');
+    }
+
+    protected static function booted()
+    {
+        static::updated(function ($reservation) {
+            // Only proceed if the status was changed to 'approved'
+            if ($reservation->status === 'approved') {
+                // Count reservations with 'approved' status for the same date
+                $count = self::where('event_date', $reservation->event_date)
+                    ->where('status', 'approved')
+                    ->count();
+
+                // If 3 approved reservations exist, remove the date from available_dates
+                if ($count >= 3) {
+                    DB::table('available_dates')->where('date', $reservation->event_date)->delete();
+                }
+            }
+        });
     }
 
 }

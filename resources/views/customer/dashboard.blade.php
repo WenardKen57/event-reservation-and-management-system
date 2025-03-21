@@ -70,7 +70,6 @@
                                         @endif
                                         
                                     @else
-                                        <span class="cancelled">Cancelled</span>
                                         <!-- Delete Button -->
                                         <form action="{{ route('customer.reservation.destroy', $reservation->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this reservation permanently?');">
                                             @csrf
