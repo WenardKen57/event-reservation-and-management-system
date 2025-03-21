@@ -56,17 +56,21 @@
                                 <td class="status">{{ ucfirst($reservation->status) }}</td>
                                 <td>
                                     @if ($reservation->status !== 'cancelled')
-                                        <!-- Cancel Button -->
-                                        <form action="{{ route('customer.reservation.cancel', $reservation->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
+                                        @if ($reservation->status === 'approved')
+                                            <h1>Approved</h1>
+                                        @else
+                                            <!-- Cancel Button -->
+                                            <form action="{{ route('customer.reservation.cancel', $reservation->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn-red">
                                                 Cancel
                                             </button>
                                         </form>
+                                        @endif
+                                        
                                     @else
                                         <span class="cancelled">Cancelled</span>
-
                                         <!-- Delete Button -->
                                         <form action="{{ route('customer.reservation.destroy', $reservation->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this reservation permanently?');">
                                             @csrf
