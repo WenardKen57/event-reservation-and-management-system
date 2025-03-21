@@ -75,6 +75,8 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::post('/reservation/store', [CustomerReservationController::class, 'store'])->name('customer.reservation.store');
     Route::delete('/reservation/{id}/cancel', [CustomerReservationController::class, 'cancel'])
     ->name('customer.reservation.cancel');
+    Route::delete('/reservation/{id}/destroy', [CustomerReservationController::class, 'destroy'])
+    ->name('customer.reservation.destroy');
 
     Route::get('/customer/event-packages', [EventPackageController::class, 'customerPackages'])
      ->name('customer.event.packages');

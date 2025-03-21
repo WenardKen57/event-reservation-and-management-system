@@ -70,4 +70,18 @@ class CustomerReservationController extends Controller
         return redirect()->route('customer.dashboard')->with('success', 'Reservation cancelled successfully.');
     }
 
+
+    public function destroy($id)
+    {
+        $reservation = EventReservation::findOrFail($id);
+        
+        // Ensure only canceled reservations can be deleted
+        if ($reservation->status !== 'cancelled') {
+            return redirect()->back()->with('error', 'Only canceled reservations can be deleted.');
+        }
+
+        $reservation->delete();
+
+        return redirect()->back()->with('success', 'Reservation deleted successfully.');
+    }
 }

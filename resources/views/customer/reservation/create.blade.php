@@ -1,4 +1,5 @@
 <x-app-layout>
+    <link rel="stylesheet" href="{{ asset('css/create-reservation.css') }}">
     <x-slot name="header">
         <h2 class="header-title">
             {{ __('Make an Event Reservation') }}
@@ -91,119 +92,6 @@
         </form>
     </div>
 
-    <!-- JavaScript for Dynamic Image Display -->
-    <script>
-        document.getElementById('package-select').addEventListener('change', function() {
-            let selectedOption = this.options[this.selectedIndex];
-            let imageUrl = selectedOption.getAttribute('data-image');
-            let packageImage = document.getElementById('package-image');
+    <script src="{{ asset('js/create-reservation.js') }}"></script>
 
-            if (imageUrl) {
-                packageImage.src = imageUrl;
-                packageImage.classList.remove('hidden');
-            } else {
-                packageImage.classList.add('hidden');
-            }
-        });
-    </script>
-
-    <style>
-        /* General Styling */
-        * {
-            font-family: 'Arial', sans-serif;
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Header */
-        .header-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-            background-color: #2563eb;
-            padding: 16px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Form Container */
-        .container {
-            max-width: 70vw;
-            margin: 20px auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border: 1px solid #ddd;
-        }
-
-        .form-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        /* Form Fields */
-        .form-label {
-            font-size: 16px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .form-input,
-        .form-select,
-        .form-textarea {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-            transition: border 0.3s ease-in-out;
-        }
-
-        .form-input:focus,
-        .form-select:focus,
-        .form-textarea:focus {
-            border-color: #2563eb;
-            outline: none;
-            box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
-        }
-
-        /* Submit Button */
-        .btn-primary {
-            background-color: #2563eb;
-            color: white;
-            padding: 12px;
-            border-radius: 5px;
-            font-size: 16px;
-            text-align: center;
-            width: 100%;
-            display: block;
-            border: none;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 15px;
-        }
-
-        .btn-primary:hover {
-            background-color: #1e40af;
-        }
-
-        .error-message {
-            color: red;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .form-input, .form-select, .form-textarea {
-                font-size: 14px;
-            }
-        }
-    </style>
 </x-app-layout>

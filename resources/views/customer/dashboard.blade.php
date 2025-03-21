@@ -36,6 +36,7 @@
                         <tr>
                             <th>Event Name</th>
                             <th>Date</th>
+                            <th>Location</th>
                             <th>Package</th>
                             <th>Guests</th>
                             <th>Total Price</th>
@@ -48,12 +49,14 @@
                             <tr>
                                 <td>{{ $reservation->event_name }}</td>
                                 <td>{{ $reservation->event_date }}</td>
+                                <td>{{ $reservation->event_location }}</td>
                                 <td>{{ $reservation->package->package_name }}</td>
                                 <td>{{ $reservation->guest }}</td>
                                 <td class="price">${{ number_format($reservation->total_price, 2) }}</td>
                                 <td class="status">{{ ucfirst($reservation->status) }}</td>
                                 <td>
                                     @if ($reservation->status !== 'cancelled')
+                                        <!-- Cancel Button -->
                                         <form action="{{ route('customer.reservation.cancel', $reservation->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
                                             @csrf
                                             @method('DELETE')
@@ -63,6 +66,15 @@
                                         </form>
                                     @else
                                         <span class="cancelled">Cancelled</span>
+
+                                        <!-- Delete Button -->
+                                        <form action="{{ route('customer.reservation.destroy', $reservation->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this reservation permanently?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn-delete">
+                                                Delete
+                                            </button>
+                                        </form>
                                     @endif
                                 </td>
                             </tr>

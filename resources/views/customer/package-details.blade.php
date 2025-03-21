@@ -19,6 +19,8 @@
             <div class="details">
                 <h2>{{ $package->package_name }}</h2>
                 <p class="price">Price: ${{ number_format($package->total_price, 2) }}</p>
+                
+                <h3>Description</h3>
                 <p class="description">{{ $package->description }}</p>
 
                 <h3>Inclusions:</h3>
@@ -29,6 +31,7 @@
                 </ul>
 
                 <a href="{{ route('customer.event.packages') }}" class="back-button">Back to Packages</a>
+                <a href="{{ route('customer.reservation.create') }}" class="back-button">Create reservation</a>
             </div>
         </div>
     </main>

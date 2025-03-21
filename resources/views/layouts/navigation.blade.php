@@ -7,14 +7,14 @@
                 <div class="shrink-0 flex items-center">
                     @if (auth()->user()->role === 'customer')
                         <a href="{{ route('customer.dashboard') }}">
-                            <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                            Caezelle
+                            <!--<x-application-logo class="block h-9 w-auto fill-current text-gray-800" />-->
                         </a>
                     @elseif (auth()->user()->role === 'admin')
                         <a href="{{ route('admin.dashboard') }}">
-                            <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                            <!--<x-application-logo class="block h-9 w-auto fill-current text-gray-800" />-->
                         </a>
                     @endif
-
                 </div>
 
                 <!-- Navigation Links -->
