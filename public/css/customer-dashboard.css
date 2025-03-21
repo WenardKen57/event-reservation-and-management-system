@@ -1,0 +1,123 @@
+/* General Dashboard Styles */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Header Styling */
+.header h2 {
+  background-color: #3498db;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Button Container */
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* Button List */
+.button-list {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: center;
+  list-style: none;
+}
+
+.button-list li {
+  margin-bottom: 10px;
+}
+
+/* Buttons */
+.custom-button {
+  display: block;
+  background-color: #3498db;
+  color: white;
+  font-weight: bold;
+  padding: 12px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Reservation Table */
+.reservation-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.reservation-table thead {
+  background-color: #3498db;
+  color: white;
+}
+
+.reservation-table th,
+.reservation-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.reservation-table th {
+  font-weight: bold;
+}
+
+
+
+/* Status Colors */
+.text-green-600 {
+  color: green;
+  font-weight: bold;
+}
+
+.text-blue-600 {
+  color: #3498db;
+  font-weight: bold;
+}
+
+/* Cancel Button */
+.btn-red {
+  background-color: red;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-red:hover {
+  background-color: darkred;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-container {
+      padding: 10px;
+  }
+
+  .button-list {
+      width: 100%;
+  }
+
+  .reservation-table th,
+  .reservation-table td {
+      font-size: 14px;
+      padding: 10px;
+  }
+}

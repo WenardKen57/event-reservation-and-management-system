@@ -112,4 +112,17 @@ class EventPackageController extends Controller
 
         return redirect()->route('admin.dashboard')->with('success', 'Package updated successfully!');
     }
+
+
+    public function customerPackages() {
+        $packages = EventPackage::all(); // Get all event packages
+        return view('customer.event-packages', compact('packages'));
+    }
+
+    public function showPackageDetails($id) {
+        $package = EventPackage::with('inclusions')->findOrFail($id);
+        return view('customer.package-details', compact('package'));
+    }
+    
+    
 }

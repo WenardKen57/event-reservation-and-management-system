@@ -1,86 +1,36 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-white leading-tight bg-blue-600 p-4 rounded-lg shadow-md">
+        <h2 class="header">
             {{ __('Customer Dashboard') }}
         </h2>
     </x-slot>
 
-    <style>
-        .dashboard-container {
-            max-width: 60rem;
-            margin: 2rem auto;
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .reservation-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-        }
-
-        .reservation-table th, .reservation-table td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: center;
-        }
-
-        .reservation-table th {
-            background-color: #f3f4f6;
-            color: #333;
-            font-weight: bold;
-        }
-
-        .reservation-table tbody tr:hover {
-            background-color: #f9fafb;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 8px 16px;
-            border-radius: 6px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-blue {
-            background-color: #2563eb;
-            color: white;
-        }
-
-        .btn-blue:hover {
-            background-color: #1e40af;
-        }
-
-        .btn-red {
-            background-color: #dc2626;
-            color: white;
-        }
-
-        .btn-red:hover {
-            background-color: #b91c1c;
-        }
-    </style>
-
-    <div class="flex justify-center mt-8">
-        <ul class="bg-white p-6 rounded-lg shadow-md w-96 text-center">
-            <li>
-                <a href="{{ route('customer.reservation.create') }}" class="btn btn-blue">
-                    Make an Event Reservation
-                </a>
-            </li>
-        </ul>
-    </div>
+    <link rel="stylesheet" href="{{ asset('css/customer-dashboard.css') }}">
 
     <div class="dashboard-container">
-        <h3 class="text-lg font-semibold mb-4 text-gray-700">Your Reservations</h3>
+
+        <!-- Button Section -->
+        <div class="button-container">
+            <ul class="button-list">
+                <li>
+                    <a href="{{ route('customer.reservation.create') }}" class="custom-button">
+                        Make an Event Reservation
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('customer.event.packages') }}" class="custom-button">
+                        View Event Packages
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <h3 class="section-title">Your Reservations</h3>
 
         @if ($reservations->isEmpty())
-            <p class="text-gray-500 text-center">No reservations found.</p>
+            <p class="no-reservations">No reservations found.</p>
         @else
-            <div class="overflow-x-auto">
+            <div class="table-container">
                 <table class="reservation-table">
                     <thead>
                         <tr>
@@ -100,19 +50,19 @@
                                 <td>{{ $reservation->event_date }}</td>
                                 <td>{{ $reservation->package->package_name }}</td>
                                 <td>{{ $reservation->guest }}</td>
-                                <td class="text-green-600 font-semibold">${{ number_format($reservation->total_price, 2) }}</td>
-                                <td class="text-blue-600 font-semibold">{{ ucfirst($reservation->status) }}</td>
+                                <td class="price">${{ number_format($reservation->total_price, 2) }}</td>
+                                <td class="status">{{ ucfirst($reservation->status) }}</td>
                                 <td>
                                     @if ($reservation->status !== 'cancelled')
                                         <form action="{{ route('customer.reservation.cancel', $reservation->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-red">
+                                            <button type="submit" class="btn-red">
                                                 Cancel
                                             </button>
                                         </form>
                                     @else
-                                        <span class="text-gray-500">Cancelled</span>
+                                        <span class="cancelled">Cancelled</span>
                                     @endif
                                 </td>
                             </tr>

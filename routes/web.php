@@ -63,7 +63,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/available-dates', [AvailableDateController::class, 'index'])->name('admin.available-dates.index');
     Route::post('/admin/available-dates', [AvailableDateController::class, 'store'])->name('admin.available-dates.store');
     Route::delete('/admin/available-dates/{id}', [AvailableDateController::class, 'destroy'])->name('admin.available-dates.destroy');
-    
+
 });
 
 Route::middleware(['auth', 'role:customer'])->group(function () {
@@ -75,6 +75,13 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::post('/reservation/store', [CustomerReservationController::class, 'store'])->name('customer.reservation.store');
     Route::delete('/reservation/{id}/cancel', [CustomerReservationController::class, 'cancel'])
     ->name('customer.reservation.cancel');
+
+    Route::get('/customer/event-packages', [EventPackageController::class, 'customerPackages'])
+     ->name('customer.event.packages');
+
+    Route::get('/customer/event-packages/{id}', [EventPackageController::class, 'showPackageDetails'])
+    ->name('customer.package.details');
+
 });
 
 

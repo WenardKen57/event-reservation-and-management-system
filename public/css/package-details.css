@@ -1,0 +1,94 @@
+/* General Page Styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f8ff; /* Light blue background */
+  color: #333;
+}
+
+/* Header Styling */
+header {
+  background-color: #007bff; /* Primary blue */
+  color: white;
+  text-align: center;
+  padding: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Main Container */
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Package Details Card */
+.package-details {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 80%;
+  max-width: 800px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Package Image */
+.package-details img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  max-height: 400px;
+}
+
+/* Package Name */
+.package-details h2 {
+  font-size: 26px;
+  color: #007bff;
+  margin-top: 15px;
+}
+
+/* Package Price */
+.package-details p {
+  font-size: 18px;
+  color: #555;
+  margin-top: 5px;
+}
+
+/* Inclusions Section */
+.package-details h3 {
+  font-size: 22px;
+  margin-top: 20px;
+  color: #333;
+}
+
+.package-details ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.package-details ul li {
+  font-size: 16px;
+  color: #444;
+  padding: 5px 0;
+}
+
+/* Back Button */
+.back-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #555;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #333;
+}
