@@ -8,6 +8,7 @@
             <ul class="nav-links">
                 <li><a href="#">Dashboard</a></li>
                 <li><a href="{{ route('admin.create-event-package') }}">Create Event Package</a></li>
+                <li><a href="{{ route('meal-packages.create') }}">Create Meal Package</a></li>
                 <li><a href="{{ route('admin.available-dates.index') }}">Set available dates</a></li>
                 <li><a href="#reservation-list">Pending reservations</a></li>
                 <li><a href="#approved-reservation-list">Approved reservations</a></li>
@@ -69,7 +70,7 @@
                         <th>Customer email</th>
                         <th>Event Name</th>
                         <th>Date</th>
-                        <th>Package</th>
+                        <th>Event Package</th>
                         <th>Guests</th>
                         <th>Total Price</th>
                         <th>Status</th>
