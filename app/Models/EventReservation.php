@@ -34,6 +34,11 @@ class EventReservation extends Model
         return $this->belongsTo(EventPackage::class, 'event_package_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id'); // Assuming user_id is the foreign key
+    }
+
     protected static function booted()
     {
         static::updated(function ($reservation) {

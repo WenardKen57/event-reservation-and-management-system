@@ -66,6 +66,7 @@
                 <thead>
                     <tr>
                         <th>Customer Name</th>
+                        <th>Customer email</th>
                         <th>Event Name</th>
                         <th>Date</th>
                         <th>Package</th>
@@ -78,7 +79,8 @@
                 <tbody>
                     @foreach ($reservations->where('status', 'pending') as $reservation)
                     <tr>
-                        <td>{{ $reservation->customer->name ?? 'N/A' }}</td>
+                        <td>{{ $reservation->user->name ?? 'Unknown User' }}</td>
+                        <td>{{ $reservation->user->email ?? 'Unkown Email' }}</td>
                         <td>{{ $reservation->event_name }}</td>
                         <td>{{ $reservation->event_date }}</td>
                         <td>{{ $reservation->package->package_name }}</td>
