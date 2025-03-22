@@ -11,6 +11,8 @@ use App\Http\Controllers\AvailableDateController;
 use App\Http\Controllers\AdminReservationController;
 use App\Http\Controllers\MealPackageController;
 use App\Http\Controllers\Admin\GCashSettingController;
+use App\Http\Controllers\Customer\CheckoutController;
+use App\Http\Controllers\Customer\PaymentProofController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -97,6 +99,10 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/meal-packages/{id}', [MealPackageController::class, 'show'])
     ->name('customer.meal.details');
 
+    Route::get('/checkout', [CheckoutController::class, 'showCheckout'])->name('customer.checkout');
+
+    Route::get('/upload-proof', [PaymentProofController::class, 'showUploadForm'])->name('customer.upload-proof');
+    Route::post('/upload-proof', [PaymentProofController::class, 'storeProof'])->name('customer.store-proof');
 
 });
 

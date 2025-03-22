@@ -11,6 +11,11 @@
                 <li><a href="{{ route('customer.reservation.create') }}">Make a Reservation</a></li>
                 <li><a href="{{ route('customer.event.packages') }}">View offered services</a></li>
                 <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+                <li>
+                    <a href="{{ route('customer.upload-proof') }}" class="btn btn-primary">Upload Proof of Payment</a>
+
+                </li>
+
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
                 </form>
