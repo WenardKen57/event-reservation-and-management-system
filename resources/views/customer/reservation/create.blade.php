@@ -6,7 +6,11 @@
         <form action="{{ route('customer.reservation.store') }}" method="POST" class="form-container">
             @csrf
 
-            <a href="{{ route('customer.event.packages') }}" target="_blank">See offered packages</a>
+            <a href="{{ route('customer.event.packages') }}" target="_blank">
+                <button type="button" id="offered-packages-btn">
+                    See offered packages
+                </button>
+            </a>
             <!-- Package Selection -->
             <label class="form-label">Select a Package:</label>
             <select name="package_id" id="package-select" class="form-select" required>
@@ -84,6 +88,12 @@
 
             <h2>Additional services:</h2>
 
+            <a href="{{ route('customer.event.packages') }}" target="_blank">
+                <button type="button" id="offered-packages-btn">
+                    See offered packages
+                </button>
+            </a>
+            
             <label>Select Meal Package:</label>
             <select name="meal_package_id">
                 <option value="">-- No Meal Package --</option>
