@@ -18,6 +18,13 @@ class MealPackageController extends Controller
         return view('admin.meal-packages.create');
     }
 
+    public function show($id)
+    {
+        $mealPackage = MealPackage::with('inclusions')->findOrFail($id);
+        return view('customer.meal.package-details', compact('mealPackage'));
+    }
+
+
     public function store(Request $request)
     {
         

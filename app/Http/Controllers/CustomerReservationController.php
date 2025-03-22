@@ -43,12 +43,12 @@ class CustomerReservationController extends Controller
             ]);
 
         $package = EventPackage::findOrFail($request->package_id);
-        $mealPackage = MealPackage::findOrFail($request->meal_package_id);
+        $mealPackage = $request->meal_package_id ? MealPackage::find($request->meal_package_id) : null;
 
         EventReservation::create([
             'user_id' => auth()->user()->id,
             'event_package_id' => $request->package_id,
-            'total_price' => ($package->total_price + $mealPackage->total_price),
+            'total_price' => $package->total_price + ($mealPackage ? $mealPackage->total_price : 0),
             'event_name' => $request->event_name,
             'event_date' => $request->event_date,
             'event_time' => $request->event_time,

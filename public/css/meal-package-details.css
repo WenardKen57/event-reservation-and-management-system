@@ -1,0 +1,70 @@
+/* General Styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Container */
+.container {
+  width: 80%;
+  max-width: 600px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Meal Card */
+.meal-card {
+  padding: 20px;
+}
+
+.meal-card h2 {
+  color: #007bff; /* Primary Blue */
+  margin-bottom: 10px;
+}
+
+.price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #28a745; /* Green for price */
+  margin-bottom: 15px;
+}
+
+/* Inclusions List */
+.meal-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.meal-card ul li {
+  background: #007bff;
+  color: white;
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 5px;
+}
+
+/* Back Button */
+.back-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.back-button:hover {
+  background: #0056b3;
+}

@@ -1,9 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="header">
-            {{ __('Customer Dashboard') }}
-        </h2>
-    </x-slot>
 
     <link rel="stylesheet" href="{{ asset('css/customer-dashboard.css') }}">
 
@@ -14,7 +9,7 @@
             <ul class="nav-links">
                 <li><a href="{{ route('customer.dashboard') }}">Dashboard</a></li>
                 <li><a href="{{ route('customer.reservation.create') }}">Make a Reservation</a></li>
-                <li><a href="{{ route('customer.event.packages') }}">View Event Packages</a></li>
+                <li><a href="{{ route('customer.event.packages') }}">View offered services</a></li>
                 <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
@@ -99,13 +94,20 @@
                                     <td>{{ $reservation->event_date }}</td>
                                     <td>{{ $reservation->event_time }}</td>
                                     <td>{{ $reservation->event_location }}</td>
-                                    <td>{{ $reservation->package->package_name }}</td>
+                                    <td>
+                                        <a href="{{ route('customer.package.details', $reservation->event_package_id) }}">
+                                            {{ $reservation->package->package_name }}
+                                        </a>
+                                    </td>
                                     <td>{{ $reservation->guest }}</td>
                                     <td class="price">${{ number_format($reservation->total_price, 2) }}</td>
                                     <td class="status {{ $reservation->status }}">{{ ucfirst($reservation->status) }}</td>
                                     <td>
                                         @if($reservation->mealPackage)
-                                            {{ $reservation->mealPackage->name }}
+                                            <a href="{{ route('customer.meal.details', $reservation->meal_package_id) }}">
+                                                {{ $reservation->mealPackage->name }}
+                                            </a>
+                                            
                                         @else
                                             <em>No Meal Package</em>
                                         @endif

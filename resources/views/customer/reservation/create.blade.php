@@ -1,15 +1,12 @@
 <x-app-layout>
     <link rel="stylesheet" href="{{ asset('css/create-reservation.css') }}">
-    <x-slot name="header">
-        <h2 class="header-title">
-            {{ __('Make an Event Reservation') }}
-        </h2>
-    </x-slot>
+    <h1 class="header-title">Make an event reservation</h1>
 
     <div class="container">
         <form action="{{ route('customer.reservation.store') }}" method="POST" class="form-container">
             @csrf
 
+            <a href="{{ route('customer.event.packages') }}" target="_blank">See offered packages</a>
             <!-- Package Selection -->
             <label class="form-label">Select a Package:</label>
             <select name="package_id" id="package-select" class="form-select" required>
@@ -84,6 +81,8 @@
             @error('special_requests')
                 <p class="error-message">{{ $message }}</p>
             @enderror
+
+            <h2>Additional services:</h2>
 
             <label>Select Meal Package:</label>
             <select name="meal_package_id">

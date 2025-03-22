@@ -21,12 +21,18 @@ class EventReservation extends Model
         'event_package_id',
         'total_price',
         'status',
+        'meal_package_id',
     ];
 
     // Define relationship with User (Customer)
     public function customer()
     {
         return $this->belongsTo(User::class, 'customer_id');
+    }
+
+    public function mealPackage()
+    {
+        return $this->belongsTo(MealPackage::class, 'meal_package_id');
     }
 
     public function package()

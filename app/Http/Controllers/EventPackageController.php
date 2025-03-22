@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\EventPackageInclusion;
 use App\Models\EventPackage;
+use App\Models\MealPackage;
 use Storage;
 
 class EventPackageController extends Controller
@@ -58,7 +59,6 @@ class EventPackageController extends Controller
                 'event_package_id' => $package->id,
                 'item_name' => $inclusionText,
                 'quantity' => $request->quantities[$index], // Get matching quantity
-
             ]);
         } 
         return redirect(route('admin.dashboard'));
@@ -116,7 +116,8 @@ class EventPackageController extends Controller
 
     public function customerPackages() {
         $packages = EventPackage::all(); // Get all event packages
-        return view('customer.event-packages', compact('packages'));
+        $mealPackages = MealPackage::all();
+        return view('customer.event-packages', compact('packages', 'mealPackages'));
     }
 
     public function showPackageDetails($id) {

@@ -1,96 +1,119 @@
-/* General Page Styling */
+/* General Styles */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f0f8ff; /* Light blue background */
+  background-color: #f4f4f9;
   color: #333;
 }
 
-/* Header Styling */
+/* Header */
 header {
-  background-color: #007bff; /* Primary blue */
+  background: #007bff;
   color: white;
   text-align: center;
-  padding: 20px;
+  padding: 20px 0;
   font-size: 24px;
   font-weight: bold;
 }
 
-.package-card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
 /* Main Container */
 .container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Section Titles */
+h1 {
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+
+/* Package Grid */
+.package-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
+  justify-content: center;
   padding: 20px;
 }
 
-/* Package Card */
+/* Package Cards */
 .package-card {
   background: white;
   border-radius: 8px;
-  padding: 16px;
-  width: 280px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: 0.3s ease-in-out;
 }
 
-.package-card h2 {
-  font-size: 20px;
-  color: #007bff;
+.package-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Package Images */
+.package-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 5px;
   margin-bottom: 10px;
 }
 
-.package-card p {
-  font-size: 16px;
-  color: #555;
+/* Package Titles */
+.package-card h2, .package-card h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 10px;
 }
 
+/* Price Text */
+.package-card p {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* View Details Button */
 .package-card a {
   display: inline-block;
-  margin-top: 10px;
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: white;
   text-decoration: none;
+  background: #007bff;
+  color: white;
+  padding: 10px 15px;
   border-radius: 5px;
+  transition: 0.3s ease-in-out;
+  font-size: 14px;
   font-weight: bold;
-  transition: background 0.3s ease;
 }
 
 .package-card a:hover {
-  background-color: #0056b3;
+  background: #0056b3;
 }
 
-/* Hover Effects */
-.package-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-/* Go Back Button */
+/* Back to Dashboard Button */
 main a {
   display: block;
   text-align: center;
   margin: 20px auto;
-  padding: 10px 20px;
-  background-color: #555;
-  color: white;
   text-decoration: none;
+  color: white;
+  background: #007bff;
+  padding: 10px 15px;
   border-radius: 5px;
-  width: 200px;
-  transition: background 0.3s ease;
+  width: fit-content;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
 }
 
 main a:hover {
-  background-color: #333;
+  background: #0056b3;
 }

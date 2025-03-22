@@ -68,7 +68,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/meal-packages/create', [MealPackageController::class, 'create'])->name('admin.meal-packages.create');
     Route::post('/meal-packages/store', [MealPackageController::class, 'store'])->name('admin.meal-packages.store');
-    Route::resource('meal-packages', MealPackageController::class);
+
 
     Route::patch('/admin/reservation/{id}/approve', [AdminReservationController::class, 'approve'])
     ->name('admin.approve-reservation');
@@ -91,6 +91,9 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 
     Route::get('/customer/event-packages/{id}', [EventPackageController::class, 'showPackageDetails'])
     ->name('customer.package.details');
+    Route::get('/meal-packages/{id}', [MealPackageController::class, 'show'])
+    ->name('customer.meal.details');
+
 
 });
 

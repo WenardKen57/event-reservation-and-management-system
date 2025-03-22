@@ -7,11 +7,6 @@
     <link rel="stylesheet" href="{{ asset('css/package-details.css') }}">
 </head>
 <body>
-
-    <header>
-        <h1>Event Package Details</h1>
-    </header>
-
     <main class="container">
         <div class="package-details">
             <img src="{{ asset('storage/' . $package->image) }}" alt="{{ $package->package_name }}">
@@ -30,6 +25,7 @@
                     @endforeach
                 </ul>
 
+                <a href="{{ route('customer.dashboard') }}" class="back-button">Back to Dashboard</a>
                 <a href="{{ route('customer.event.packages') }}" class="back-button">Back to Packages</a>
                 <a href="{{ route('customer.reservation.create') }}" class="back-button">Create reservation</a>
             </div>
