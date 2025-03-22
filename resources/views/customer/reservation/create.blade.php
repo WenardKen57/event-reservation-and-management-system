@@ -85,6 +85,16 @@
                 <p class="error-message">{{ $message }}</p>
             @enderror
 
+            <label>Select Meal Package:</label>
+            <select name="meal_package_id">
+                <option value="">-- No Meal Package --</option>
+                @foreach($mealPackages as $package)
+                    <option value="{{ $package->id }}">
+                        {{ $package->name }} - ₱{{ number_format($package->total_price, 2) }}
+                    </option>
+                @endforeach
+            </select>
+
             <!-- Submit Button -->
             <button type="submit" class="btn-primary">
                 Submit Reservation

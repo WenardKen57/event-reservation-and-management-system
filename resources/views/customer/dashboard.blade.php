@@ -84,10 +84,11 @@
                                 <th>Date</th>
                                 <th>Time</th>
                                 <th>Location</th>
-                                <th>Package</th>
+                                <th>Event Package</th>
                                 <th>Guests</th>
                                 <th>Total Price</th>
                                 <th>Status</th>
+                                <th>Meal package name</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -102,6 +103,13 @@
                                     <td>{{ $reservation->guest }}</td>
                                     <td class="price">${{ number_format($reservation->total_price, 2) }}</td>
                                     <td class="status {{ $reservation->status }}">{{ ucfirst($reservation->status) }}</td>
+                                    <td>
+                                        @if($reservation->mealPackage)
+                                            {{ $reservation->mealPackage->name }}
+                                        @else
+                                            <em>No Meal Package</em>
+                                        @endif
+                                    </td>
                                     <td>
                                         @if ($reservation->status === 'pending')
                                             <form action="{{ route('customer.reservation.cancel', $reservation->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\EventReservation;
 use App\Models\EventPackage;
 use App\Models\AvailableDate;
+use App\Models\MealPackage;
 
 class CustomerReservationController extends Controller
 {
@@ -13,7 +14,8 @@ class CustomerReservationController extends Controller
     {
         $availableDates = AvailableDate::pluck('date')->toArray();
         $packages = EventPackage::all(); // Fetch all packages
-        return view('customer.reservation.create', compact('availableDates', 'packages'));
+        $mealPackages = MealPackage::all();
+        return view('customer.reservation.create', compact('mealPackages','availableDates', 'packages'));
 
     }
 
@@ -37,14 +39,16 @@ class CustomerReservationController extends Controller
                 },
             ],
             'package_image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048', // Validate image
+            'meal_package_id' => 'nullable|exists:meal_packages,id', // Optional meal package
             ]);
 
         $package = EventPackage::findOrFail($request->package_id);
+        $mealPackage = MealPackage::findOrFail($request->meal_package_id);
 
         EventReservation::create([
             'user_id' => auth()->user()->id,
             'event_package_id' => $request->package_id,
-            'total_price' => $package->total_price,
+            'total_price' => ($package->total_price + $mealPackage->total_price),
             'event_name' => $request->event_name,
             'event_date' => $request->event_date,
             'event_time' => $request->event_time,
@@ -52,6 +56,7 @@ class CustomerReservationController extends Controller
             'guest' => $request->guests,
             'event_type' => $request->event_type,
             'special_requests' => $request->special_requests,
+            'meal_package_id' => $request->meal_package_id,
         ]);
 
         return redirect()->route('customer.dashboard')->with('success', 'Reservation created successfully!');
