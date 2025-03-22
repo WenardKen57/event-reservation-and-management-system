@@ -8,10 +8,13 @@
             <ul class="nav-links">
                 <li><a href="#">Dashboard</a></li>
                 <li><a href="{{ route('admin.create-event-package') }}">Create Event Package</a></li>
-                <li><a href="{{ route('meal-packages.create') }}">Create Meal Package</a></li>
+                <li><a href="{{ route('admin.meal-packages.create') }}">Create Meal Package</a></li>
                 <li><a href="{{ route('admin.available-dates.index') }}">Set available dates</a></li>
                 <li><a href="#reservation-list">Pending reservations</a></li>
                 <li><a href="#approved-reservation-list">Approved reservations</a></li>
+                <li>
+                    <a href="{{ route('admin.gcash.index') }}">GCash Settings</a>
+                </li>
             </ul>
         </aside>
 

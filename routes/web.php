@@ -10,6 +10,7 @@ use App\Http\Controllers\CustomerReservationController;
 use App\Http\Controllers\AvailableDateController;
 use App\Http\Controllers\AdminReservationController;
 use App\Http\Controllers\MealPackageController;
+use App\Http\Controllers\Admin\GCashSettingController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -69,9 +70,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/meal-packages/create', [MealPackageController::class, 'create'])->name('admin.meal-packages.create');
     Route::post('/meal-packages/store', [MealPackageController::class, 'store'])->name('admin.meal-packages.store');
 
-
     Route::patch('/admin/reservation/{id}/approve', [AdminReservationController::class, 'approve'])
     ->name('admin.approve-reservation');
+
+    Route::get('/admin/gcash-settings', [GCashSettingController::class, 'index'])->name('admin.gcash.index');
+    Route::post('/admin/gcash-settings', [GCashSettingController::class, 'update'])->name('admin.gcash.update');
 });
 
 Route::middleware(['auth', 'role:customer'])->group(function () {
