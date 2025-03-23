@@ -22,6 +22,7 @@ class EventReservation extends Model
         'total_price',
         'status',
         'meal_package_id',
+        'deposit_status',
     ];
 
     // Define relationship with User (Customer)

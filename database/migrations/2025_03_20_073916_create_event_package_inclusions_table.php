@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('event_package_inclusions', function (Blueprint $table) {
             $table->id();
             $table->string('item_name', 255)->nullable(false);
-            $table->integer('quantity')->default(0);
+            $table->string('quantity', 50)->nullable();
             $table->foreignId('event_package_id')->constrained('event_packages')->cascadeOnDelete();
             $table->timestamps();
         });

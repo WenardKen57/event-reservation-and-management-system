@@ -49,6 +49,6 @@ class MealPackageController extends Controller
             $mealPackage->inclusions()->create($inclusion);
         }
 
-        return redirect()->route('meal-packages.index')->with('success', 'Meal package created successfully.');
+        return redirect()->route('admin.dashboard')->with('success', 'Meal package created successfully.');
     }
 }

@@ -2,6 +2,22 @@
 
     <link rel="stylesheet" href="{{ asset('css/customer-dashboard.css') }}">
 
+    @if(session('success'))
+        <div id="success-alert" class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        <script>
+            setTimeout(function() {
+                let alert = document.getElementById('success-alert');
+                if (alert) {
+                    alert.style.display = 'none';
+                }
+            }, 3000);
+        </script>
+    @endif
+
+
+
     <div class="dashboard-container">
         <!-- Sidebar -->
         <aside class="sidebar">
@@ -9,10 +25,9 @@
             <ul class="nav-links">
                 <li><a href="{{ route('customer.dashboard') }}">Dashboard</a></li>
                 <li><a href="{{ route('customer.reservation.create') }}">Make a Reservation</a></li>
-                <li><a href="{{ route('customer.event.packages') }}">View offered services</a></li>
-                <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+                <li><a href="{{ route('event.packages') }}">View offered services</a></li>
                 <li>
-                    <a href="{{ route('customer.upload-proof') }}" class="btn btn-primary">Upload Proof of Payment</a>
+                    <a href="{{ route('customer.upload-proof') }}" class="btn btn-primary">Pay for a reservation</a>
 
                 </li>
 
@@ -46,6 +61,7 @@
                                 <th>Guests</th>
                                 <th>Total Price</th>
                                 <th>Status</th>
+                                <th>Deposit status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,6 +75,9 @@
                                     <td>{{ $reservation->guest }}</td>
                                     <td class="price">${{ number_format($reservation->total_price, 2) }}</td>
                                     <td class="status approved">Approved</td>
+                                    <td class="status {{ $reservation->deposit_status ?? 'no-deposit' }}">
+                                        {{ ucfirst($reservation->deposit_status ?? 'No Deposit') }}
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -89,6 +108,7 @@
                                 <th>Total Price</th>
                                 <th>Status</th>
                                 <th>Meal package name</th>
+                                <th>Deposit status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -116,6 +136,9 @@
                                         @else
                                             <em>No Meal Package</em>
                                         @endif
+                                    </td>
+                                    <td class="status {{ $reservation->deposit_status ?? 'no-deposit' }}">
+                                        {{ ucfirst($reservation->deposit_status ?? 'No Deposit') }}
                                     </td>
                                     <td>
                                         @if ($reservation->status === 'pending')

@@ -23,4 +23,9 @@ class PaymentProof extends Model
     {
         return $this->belongsTo(EventReservation::class);
     }
+    public function eventReservation()
+    {
+        return $this->belongsTo(EventReservation::class, 'event_reservation_id');
+    }
+
 }

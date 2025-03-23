@@ -13,10 +13,23 @@ use App\Http\Controllers\MealPackageController;
 use App\Http\Controllers\Admin\GCashSettingController;
 use App\Http\Controllers\Customer\CheckoutController;
 use App\Http\Controllers\Customer\PaymentProofController;
+use App\Http\Controllers\Admin\PaymentVerificationController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/about', function () {
+    return view('about');
+});
+
+Route::get('event-packages', [EventPackageController::class, 'customerPackages'])
+->name('event.packages');
+
+Route::get('event-packages/{id}', [EventPackageController::class, 'showPackageDetails'])
+->name('package.details');
+Route::get('/meal-packages/{id}', [MealPackageController::class, 'show'])
+->name('meal.details');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -77,6 +90,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/admin/gcash-settings', [GCashSettingController::class, 'index'])->name('admin.gcash.index');
     Route::post('/admin/gcash-settings', [GCashSettingController::class, 'update'])->name('admin.gcash.update');
+
+    Route::get('/admin/payment-verifications', [PaymentVerificationController::class, 'index'])->name('admin.payment-verifications');
+    Route::put('/admin/payment-verifications/{id}/verify', [PaymentVerificationController::class, 'verify'])->name('admin.verify-payment');
+    Route::put('/admin/payment-verifications/{id}/reject', [PaymentVerificationController::class, 'reject'])->name('admin.reject-payment');
+
 });
 
 Route::middleware(['auth', 'role:customer'])->group(function () {
@@ -91,13 +109,7 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::delete('/reservation/{id}/destroy', [CustomerReservationController::class, 'destroy'])
     ->name('customer.reservation.destroy');
 
-    Route::get('/customer/event-packages', [EventPackageController::class, 'customerPackages'])
-     ->name('customer.event.packages');
 
-    Route::get('/customer/event-packages/{id}', [EventPackageController::class, 'showPackageDetails'])
-    ->name('customer.package.details');
-    Route::get('/meal-packages/{id}', [MealPackageController::class, 'show'])
-    ->name('customer.meal.details');
 
     Route::get('/checkout', [CheckoutController::class, 'showCheckout'])->name('customer.checkout');
 

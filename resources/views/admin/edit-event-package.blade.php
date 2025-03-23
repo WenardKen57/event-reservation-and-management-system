@@ -78,6 +78,17 @@
 </head>
 <body>
 
+    @if ($errors->any())
+        <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 15px;">
+            <strong>There were some errors with your submission:</strong>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <div class="container">
         <h1>Edit Event Package</h1>
 
@@ -118,8 +129,8 @@
             <div id="inclusions-container">
                 @foreach($package->inclusions as $inclusion)
                     <div class="inclusion-item">
-                        <input type="text" name="inclusions[{{ $inclusion->id }}][name]" value="{{ $inclusion->item_name }}" required>
-                        <input type="text" name="inclusions[{{ $inclusion->id }}][description]" value="{{ $inclusion->quantity }}" required>
+                        <input type="text" name="inclusions[{{ $inclusion->id }}][name]" value="{{ $inclusion->item_name }}" >
+                        <input type="text" name="inclusions[{{ $inclusion->id }}][quantity]" value="{{ $inclusion->quantity }}">
                         <button type="button" class="remove-inclusion" onclick="removeInclusion(this)">X</button>
                     </div>
                 @endforeach
@@ -141,8 +152,8 @@
         let newInclusion = document.createElement('div');
         newInclusion.classList.add('inclusion-item');
         newInclusion.innerHTML = `
-            <input type="text" name="new_inclusions[${index}][item_name]" placeholder="Item Name" required>
-            <input type="number" name="new_inclusions[${index}][quantity]" placeholder="Quantity" required>
+            <input type="text" name="new_inclusions[${index}][item_name]" placeholder="Item Name">
+            <input type="text" name="new_inclusions[${index}][quantity]" placeholder="Quantity">
             <button type="button" class="remove-inclusion" onclick="removeInclusion(this)">X</button>
         `;
         container.appendChild(newInclusion);

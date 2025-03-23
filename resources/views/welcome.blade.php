@@ -17,8 +17,14 @@
             @if (Route::has('login'))
                 <div class="nav-links">
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="nav-button">Dashboard</a>
+                        @if (auth()->user()->role === 'customer')
+                            <a href="{{ route('customer.dashboard') }}" class="nav-button">Dashboard</a>
+                        @else
+                            <a href="{{ route('admin.dashboard') }}" class="nav-button">Dashboard</a>
+                        @endif
+                       
                     @else
+                        <a href="./about" class="nav-button">About</a>
                         <a href="{{ route('login') }}" class="nav-button">Log in</a>
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}" class="register-button">Register</a>

@@ -8,6 +8,19 @@
 </head>
 <body>
 
+    @if ($errors->any())
+        <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 15px;">
+            <strong>There were some errors with your submission:</strong>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    
+
     <div class="container">
         <h2>Create Meal Package</h2>
 
@@ -16,8 +29,8 @@
             <label>Package Name:</label>
             <input type="text" name="name" required>
 
-            <label for="total_price">Package total price:</label>
-            <input type="number" name="total_price" required>
+            <label for="total_price">Package total price: (Per Plate)</label>
+            <input type="number" name="total_price" placeholder="total price per plate" required>
 
             <div id="inclusions">
                 <div class="inclusion-item">

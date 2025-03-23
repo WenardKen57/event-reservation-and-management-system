@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Quantity Input
       let quantityInput = document.createElement('input');
-      quantityInput.type = "number";
+      quantityInput.type = "text";
       quantityInput.name = "quantities[]"; // Array for Laravel
       quantityInput.placeholder = "Qty";
       quantityInput.min = "1";
@@ -36,16 +36,19 @@ document.addEventListener("DOMContentLoaded", function () {
       wrapper.appendChild(inclusionInput);
       wrapper.appendChild(quantityInput);
       wrapper.appendChild(removeButton);
-      inclusionsContainer.appendChild(wrapper);
+
+      // Insert new inclusion **before** the add button
+      inclusionsContainer.parentNode.insertBefore(wrapper, inclusionsContainer);
   });
 
+  // Image Preview
   document.getElementById('package_image').addEventListener('change', function(event) {
-    let reader = new FileReader();
-    reader.onload = function() {
-        let imagePreview = document.getElementById('image-preview');
-        imagePreview.src = reader.result;
-        imagePreview.style.display = 'block';
-    };
-    reader.readAsDataURL(event.target.files[0]);
+      let reader = new FileReader();
+      reader.onload = function() {
+          let imagePreview = document.getElementById('image-preview');
+          imagePreview.src = reader.result;
+          imagePreview.style.display = 'block';
+      };
+      reader.readAsDataURL(event.target.files[0]);
   });
 });

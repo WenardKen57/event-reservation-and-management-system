@@ -6,18 +6,30 @@
         <form action="{{ route('customer.reservation.store') }}" method="POST" class="form-container">
             @csrf
 
-            <a href="{{ route('customer.event.packages') }}" target="_blank">
+            <a href="{{ route('event.packages') }}" target="_blank">
                 <button type="button" id="offered-packages-btn">
                     See offered packages
                 </button>
             </a>
+
+            <!-- Event Type Selection -->
+            <label class="form-label">Select Event Type:</label>
+            <select id="event-type-select" class="form-select" required>
+                <option value="">-- Select Event Type --</option>
+                <option value="wedding">Wedding</option>
+                <option value="birthday">Birthday</option>
+                <option value="others">Others</option>
+            </select>
+
             <!-- Package Selection -->
             <label class="form-label">Select a Package:</label>
             <select name="package_id" id="package-select" class="form-select" required>
                 <option value="" data-image="">-- Select a Package --</option>
                 @foreach ($packages as $package)
-                    <option value="{{ $package->id }}" data-image="{{ asset('storage/' . $package->image) }}" 
-                        {{ old('package_id') == $package->id ? 'selected' : '' }}>
+                    <option value="{{ $package->id }}" 
+                            data-image="{{ asset('storage/' . $package->image) }}" 
+                            data-event-type="{{ $package->event_type }}"
+                            {{ old('package_id') == $package->id ? 'selected' : '' }}>
                         {{ $package->package_name }} - ${{ number_format($package->total_price, 2) }}
                     </option>
                 @endforeach
@@ -25,6 +37,7 @@
             @error('package_id')
                 <p class="error-message">{{ $message }}</p>
             @enderror
+
 
             <!-- Display Package Image -->
             <div class="image-container">
@@ -88,21 +101,28 @@
 
             <h2>Additional services:</h2>
 
-            <a href="{{ route('customer.event.packages') }}" target="_blank">
+            <a href="{{ route('event.packages') }}" target="_blank">
                 <button type="button" id="offered-packages-btn">
                     See offered packages
                 </button>
             </a>
             
-            <label>Select Meal Package:</label>
-            <select name="meal_package_id">
+            <label class="block text-gray-700 font-semibold mb-2">Select Meal Package:</label>
+            <select name="meal_package_id" id="meal-package-select" 
+                class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">-- No Meal Package --</option>
                 @foreach($mealPackages as $package)
-                    <option value="{{ $package->id }}">
+                    <option value="{{ $package->id }}" data-inclusions="{{ json_encode($package->inclusions) }}">
                         {{ $package->name }} - ₱{{ number_format($package->total_price, 2) }}
                     </option>
                 @endforeach
             </select>
+
+            <!-- Meal Package Inclusions Display -->
+            <div id="meal-package-inclusions" class="hidden bg-gray-100 p-4 rounded-lg mt-4 shadow-md">
+                <h4 class="text-lg font-bold text-gray-800">Inclusions (Per plate):</h4>
+                <ul id="inclusions-list" class="list-disc pl-5 text-gray-700 mt-2 space-y-1"></ul>
+            </div>
 
             <!-- Submit Button -->
             <button type="submit" class="btn-primary">
@@ -113,4 +133,56 @@
 
     <script src="{{ asset('js/create-reservation.js') }}"></script>
 
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const selectElement = document.getElementById("meal-package-select");
+            const inclusionsContainer = document.getElementById("meal-package-inclusions");
+            const inclusionsList = document.getElementById("inclusions-list");
+
+            selectElement.addEventListener("change", function () {
+                inclusionsList.innerHTML = ""; // Clear existing inclusions
+
+                let selectedOption = selectElement.options[selectElement.selectedIndex];
+                let inclusions = selectedOption.getAttribute("data-inclusions");
+
+                if (inclusions && inclusions !== "null") {
+                    inclusions = JSON.parse(inclusions); // Convert from JSON string to JS object
+                    
+                    if (inclusions.length > 0) {
+                        inclusions.forEach(item => {
+                            let listItem = document.createElement("li");
+                            listItem.textContent = `${item.item_name}`;
+                            inclusionsList.appendChild(listItem);
+                        });
+
+                        inclusionsContainer.classList.remove("hidden"); // Show inclusions container
+                    } else {
+                        inclusionsContainer.classList.add("hidden"); // Hide if no inclusions
+                    }
+                } else {
+                    inclusionsContainer.classList.add("hidden"); // Hide if no package is selected
+                }
+            });
+        });
+
+        document.getElementById('event-type-select').addEventListener('change', function() {
+            let selectedEventType = this.value;
+            let packageSelect = document.getElementById('package-select');
+            
+            // Reset package selection
+            packageSelect.innerHTML = '<option value="">-- Select a Package --</option>';
+
+            // Loop through all package options and filter by event type
+            @foreach ($packages as $package)
+                if ('{{ $package->event_type }}' === selectedEventType) {
+                    let option = document.createElement('option');
+                    option.value = '{{ $package->id }}';
+                    option.textContent = '{{ $package->package_name }} - ${{ number_format($package->total_price, 2) }}';
+                    option.setAttribute('data-image', '{{ asset('storage/' . $package->image) }}');
+                    packageSelect.appendChild(option);
+                }
+            @endforeach
+        });
+    </script>
 </x-app-layout>

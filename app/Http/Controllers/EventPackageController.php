@@ -21,20 +21,8 @@ class EventPackageController extends Controller
             'inclusions' => 'required|array', // Ensure it's an array
             'inclusions.*' => 'required|string|max:255', // Each inclusion must be a string
             'quantities' => 'nullable|array',  // Must be an array
-            'quantities.*' => 'nullable|integer|min:1', // Each quantity must be a number
-            'event_time' => [
-                'required',
-                'date_format:H:i',
-                function ($attribute, $value, $fail) {
-                    $time = strtotime($value);
-                    $start = strtotime('23:00'); // 11 PM
-                    $end = strtotime('06:00');  // 6 AM
-
-                    if ($time >= $start || $time < $end) {
-                        $fail('The event time cannot be between 11 PM and 6 AM.');
-                    }
-                },
-            ],
+            'quantities.*' => 'nullable', // Each quantity must be a number
+            
         ]);
 
         // Handle Image Upload
@@ -85,13 +73,19 @@ class EventPackageController extends Controller
             'description' => 'required|string',
             'total_price' => 'required|numeric',
             'event_type' => 'required|string|in:wedding,birthday,others',
+            'inclusions' => 'nullable|array',
+            'inclusions.*.name' => 'nullable|string|max:255',
+            'inclusions.*.quantity' => 'nullable|string|max:255',
+            'new_inclusions' => 'nullable|array',
+            'new_inclusions.*.item_name' => 'nullable|string|max:255',
+            'new_inclusions.*.quantity' => 'nullable|string|max:255',
         ]);
 
         $package = EventPackage::findOrFail($id);
+        $packageInclusion = EventPackageInclusion::findOrFail($id);
 
         // Handle image upload
         if ($request->hasFile('image')) {
-
             
             // Delete old image if exists
             if ($package->image) {
@@ -108,7 +102,34 @@ class EventPackageController extends Controller
             'description' => $request->description,
             'total_price' => $request->total_price,
             'event_type' => $request->event_type,
+            'quantity' => $request->quantity,
         ]);
+
+        // Update existing inclusions
+        if ($request->has('inclusions')) {
+            foreach ($request->inclusions as $inclusionId => $inclusionData) {
+                $inclusion = EventPackageInclusion::find($inclusionId);
+                if ($inclusion) {
+                    $inclusion->update([
+                        'item_name' => $inclusionData['name'],
+                        'quantity' => $inclusionData['quantity'],
+                    ]);
+                }
+            }
+        }
+
+        // Add new inclusions if any
+        if ($request->has('new_inclusions')) {
+            foreach ($request->new_inclusions as $newInclusionData) {
+                if (!empty($newInclusionData['item_name'])) {
+                    EventPackageInclusion::create([
+                        'event_package_id' => $package->id,
+                        'item_name' => $newInclusionData['item_name'],
+                        'quantity' => $newInclusionData['quantity'],
+                    ]);
+                }
+            }
+        }
 
         return redirect()->route('admin.dashboard')->with('success', 'Package updated successfully!');
     }
@@ -117,12 +138,12 @@ class EventPackageController extends Controller
     public function customerPackages() {
         $packages = EventPackage::all(); // Get all event packages
         $mealPackages = MealPackage::all();
-        return view('customer.event-packages', compact('packages', 'mealPackages'));
+        return view('event-packages', compact('packages', 'mealPackages'));
     }
 
     public function showPackageDetails($id) {
         $package = EventPackage::with('inclusions')->findOrFail($id);
-        return view('customer.package-details', compact('package'));
+        return view('package-details', compact('package'));
     }
     
     

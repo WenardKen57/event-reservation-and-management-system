@@ -15,6 +15,9 @@
                 <li>
                     <a href="{{ route('admin.gcash.index') }}">GCash Settings</a>
                 </li>
+                <li>
+                    <a href="{{ route('admin.payment-verifications') }}" class="btn btn-primary">Manage Payment Verifications</a>
+                </li>
             </ul>
         </aside>
 
@@ -25,7 +28,8 @@
             </header>
 
             <section class="dashboard-actions">
-                <a href="{{ route('admin.create-event-package') }}" class="btn-primary">Create Event Package</a>
+                <a href="{{ route('admin.create-event-package') }}" class="btn-primary">Create a New Event Package</a>
+                <a href="{{ route('admin.meal-packages.create') }}" class="btn-primary">Create a New Meal Package</a>
             </section>
 
             <!-- Event Packages List -->
@@ -87,7 +91,7 @@
                         <td>{{ $reservation->user->email ?? 'Unkown Email' }}</td>
                         <td>{{ $reservation->event_name }}</td>
                         <td>{{ $reservation->event_date }}</td>
-                        <td>{{ $reservation->package->package_name }}</td>
+                        <td>{{ $reservation->package->package_name ?? 'No Package Selected' }}</td>
                         <td>{{ $reservation->guest }}</td>
                         <td>${{ number_format($reservation->total_price, 2) }}</td>
                         <td class="status">{{ ucfirst($reservation->status) }}</td>
@@ -111,8 +115,10 @@
                 <thead>
                     <tr>
                         <th>Customer Name</th>
+                        <th>Customer Email</th>
                         <th>Event Name</th>
                         <th>Date</th>
+                        <th>Location</th>
                         <th>Package</th>
                         <th>Guests</th>
                         <th>Total Price</th>
@@ -122,10 +128,12 @@
                 <tbody>
                     @foreach ($reservations->where('status', 'approved') as $reservation)
                     <tr>
-                        <td>{{ $reservation->customer->name ?? 'N/A' }}</td>
+                        <td>{{ $reservation->user->name ?? 'N/A' }}</td>
+                        <td>{{ $reservation->user->email ?? 'N/A' }}</td>
                         <td>{{ $reservation->event_name }}</td>
                         <td>{{ $reservation->event_date }}</td>
-                        <td>{{ $reservation->package->package_name }}</td>
+                        <td>{{ $reservation->event_location }}</td>
+                        <td>{{ $reservation->package->package_name ?? 'No Package Selected' }}</td>
                         <td>{{ $reservation->guest }}</td>
                         <td>${{ number_format($reservation->total_price, 2) }}</td>
                         <td class="status-approved">Approved</td>

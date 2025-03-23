@@ -8,7 +8,16 @@
     
 </head>
 <body>
-
+    @if ($errors->any())
+        <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 15px;">
+            <strong>There were some errors with your submission:</strong>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <div id="container">
         <h1>Create new event package</h1>
