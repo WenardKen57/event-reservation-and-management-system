@@ -25,6 +25,14 @@ class EventReservation extends Model
         'deposit_status',
     ];
 
+    public function rentalItems()
+    {
+        return $this->belongsToMany(RentalItem::class, 'reservation_rental_item')
+                    ->withPivot('quantity', 'total_price')
+                    ->withTimestamps();
+    }
+    
+
     // Define relationship with User (Customer)
     public function customer()
     {

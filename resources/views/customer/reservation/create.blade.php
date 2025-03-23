@@ -124,6 +124,22 @@
                 <ul id="inclusions-list" class="list-disc pl-5 text-gray-700 mt-2 space-y-1"></ul>
             </div>
 
+            <h2>Select Rental Items:</h2>
+            <div id="rental-items-container">
+                @foreach($rentalItems as $item)
+                    <div class="rental-item">
+                        <input type="checkbox" name="rental_items[{{ $item->id }}][id]" value="{{ $item->id }}" 
+                            data-price="{{ $item->price }}" class="rental-checkbox">
+                        <label>{{ $item->name }} - ₱{{ number_format($item->price, 2) }}</label>
+                        <input type="number" name="rental_items[{{ $item->id }}][quantity]" min="1" value="1" 
+                            class="rental-quantity hidden" data-item-id="{{ $item->id }}">
+                    </div>
+                @endforeach
+            </div>
+
+            <p><strong>Total Rental Price: </strong>₱<span id="total-rental-price">0.00</span></p>
+
+
             <!-- Submit Button -->
             <button type="submit" class="btn-primary">
                 Submit Reservation
@@ -184,5 +200,81 @@
                 }
             @endforeach
         });
+
+        const eventPackageSelect = document.getElementById("package-select");
+        const mealPackageSelect = document.getElementById("meal-package-select");
+        const rentalCheckboxes = document.querySelectorAll(".rental-checkbox");
+        const totalPriceElement = document.getElementById("total-rental-price");
+        const finalTotalElement = document.createElement("p");
+        
+        finalTotalElement.innerHTML = `<strong>Final Total Price: </strong>₱<span id="final-total-price">0.00</span>`;
+        totalPriceElement.parentNode.appendChild(finalTotalElement);
+        
+        function updateTotalPrice() {
+            let eventPackageSelect = document.getElementById("package-select");
+            let mealPackageSelect = document.getElementById("meal-package-select");
+            let rentalCheckboxes = document.querySelectorAll(".rental-checkbox");
+            let totalPriceElement = document.getElementById("total-rental-price");
+
+            let eventPackagePrice = 0;
+            let selectedPackage = eventPackageSelect.options[eventPackageSelect.selectedIndex];
+
+            if (selectedPackage) {
+                let match = selectedPackage.textContent.match(/\$([\d,.]+)/); // Extract price from "$XXX.XX"
+                if (match) {
+                    eventPackagePrice = parseFloat(match[1].replace(",", ""));
+                }
+            }
+
+            let mealPackagePrice = 0;
+            let selectedMealPackage = mealPackageSelect.options[mealPackageSelect.selectedIndex];
+
+            if (selectedMealPackage) {
+                let match = selectedMealPackage.textContent.match(/₱([\d,.]+)/); // Extract price from "₱XXX.XX"
+                if (match) {
+                    mealPackagePrice = parseFloat(match[1].replace(",", ""));
+                }
+            }
+
+            let rentalTotal = 0;
+
+            document.querySelectorAll(".rental-checkbox:checked").forEach((checkbox) => {
+                let quantityInput = checkbox.parentElement.querySelector(".rental-quantity");
+                let quantity = parseInt(quantityInput.value) || 0;
+                let price = parseFloat(checkbox.getAttribute("data-price")) || 0;
+
+                if (quantity < 1) {
+                    quantity = 1; 
+                    quantityInput.value = 1;
+                }
+                rentalTotal += price * quantity;
+            });
+
+            totalPriceElement.textContent = rentalTotal.toFixed(2);
+            let finalTotal = eventPackagePrice + mealPackagePrice + rentalTotal;
+            document.getElementById("final-total-price").textContent = finalTotal.toFixed(2);
+        }
+
+
+        eventPackageSelect.addEventListener("change", updateTotalPrice);
+        mealPackageSelect.addEventListener("change", updateTotalPrice);
+
+        rentalCheckboxes.forEach((checkbox) => {
+            checkbox.addEventListener("change", function () {
+                let quantityInput = this.parentElement.querySelector(".rental-quantity");
+                quantityInput.classList.toggle("hidden", !this.checked);
+                if (this.checked) {
+                    quantityInput.value = 1; 
+                }
+                updateTotalPrice();
+            });
+        });
+
+        document.querySelectorAll(".rental-quantity").forEach((input) => {
+            input.addEventListener("input", updateTotalPrice);
+        });
+
+        updateTotalPrice(); 
+
     </script>
 </x-app-layout>

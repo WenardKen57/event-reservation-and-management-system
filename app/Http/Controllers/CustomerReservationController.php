@@ -7,6 +7,7 @@ use App\Models\EventReservation;
 use App\Models\EventPackage;
 use App\Models\AvailableDate;
 use App\Models\MealPackage;
+use App\Models\RentalItem;
 
 class CustomerReservationController extends Controller
 {
@@ -15,7 +16,8 @@ class CustomerReservationController extends Controller
         $availableDates = AvailableDate::pluck('date')->toArray();
         $packages = EventPackage::all(); // Fetch all packages
         $mealPackages = MealPackage::all();
-        return view('customer.reservation.create', compact('mealPackages','availableDates', 'packages'));
+        $rentalItems = RentalItem::all(); // Fetch rental items
+        return view('customer.reservation.create', compact('rentalItems','mealPackages','availableDates', 'packages'));
 
     }
 
@@ -45,7 +47,7 @@ class CustomerReservationController extends Controller
         $package = EventPackage::findOrFail($request->package_id);
         $mealPackage = $request->meal_package_id ? MealPackage::find($request->meal_package_id) : null;
 
-        EventReservation::create([
+        $reservation = EventReservation::create([
             'user_id' => auth()->user()->id,
             'event_package_id' => $request->package_id,
             'total_price' => $package->total_price + ($mealPackage ? $mealPackage->total_price : 0),
@@ -58,6 +60,20 @@ class CustomerReservationController extends Controller
             'special_requests' => $request->special_requests,
             'meal_package_id' => $request->meal_package_id,
         ]);
+
+        if ($request->has('rental_items')) {
+            foreach ($request->rental_items as $rentalItem) {
+                if (!empty($rentalItem['id']) && !empty($rentalItem['quantity'])) {
+                    $item = RentalItem::find($rentalItem['id']);
+                    $totalPrice = $item->price * $rentalItem['quantity'];
+    
+                    $reservation->rentalItems()->attach($item->id, [
+                        'quantity' => $rentalItem['quantity'],
+                        'total_price' => $totalPrice,
+                    ]);
+                }
+            }
+        }
 
         return redirect()->route('customer.dashboard')->with('success', 'Reservation created successfully!');
     }

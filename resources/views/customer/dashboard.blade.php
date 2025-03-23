@@ -66,19 +66,32 @@
                         </thead>
                         <tbody>
                             @foreach ($approvedReservations as $reservation)
-                                <tr>
-                                    <td>{{ $reservation->event_name }}</td>
-                                    <td>{{ $reservation->event_date }}</td>
-                                    <td>{{ $reservation->event_time }}</td>
-                                    <td>{{ $reservation->event_location }}</td>
-                                    <td>{{ $reservation->package->package_name }}</td>
-                                    <td>{{ $reservation->guest }}</td>
-                                    <td class="price">${{ number_format($reservation->total_price, 2) }}</td>
-                                    <td class="status approved">Approved</td>
-                                    <td class="status {{ $reservation->deposit_status ?? 'no-deposit' }}">
-                                        {{ ucfirst($reservation->deposit_status ?? 'No Deposit') }}
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>{{ $reservation->event_name }}</td>
+                                <td>{{ $reservation->event_date }}</td>
+                                <td>{{ $reservation->event_time }}</td>
+                                <td>{{ $reservation->event_location }}</td>
+                                <td>{{ $reservation->package->package_name }}</td>
+                                <td>{{ $reservation->guest }}</td>
+                                <td class="price">${{ number_format($reservation->total_price, 2) }}</td>
+                                <td class="status approved">Approved</td>
+                                <td class="status {{ $reservation->deposit_status ?? 'no-deposit' }}">
+                                    {{ ucfirst($reservation->deposit_status ?? 'No Deposit') }}
+                                </td>
+                            </tr>
+
+                            @if ($reservation->rentalItems->isNotEmpty())
+                            <tr>
+                                <td colspan="9">
+                                    <strong>Rental Items:</strong>
+                                    <ul>
+                                        @foreach ($reservation->rentalItems as $rental)
+                                            <li>{{ $rental->name }} (x{{ $rental->pivot->quantity }}) - ${{ number_format($rental->pivot->total_price, 2) }}</li>
+                                        @endforeach
+                                    </ul>
+                                </td>
+                            </tr>
+                            @endif
                             @endforeach
                         </tbody>
                     </table>
@@ -129,10 +142,9 @@
                                     <td class="status {{ $reservation->status }}">{{ ucfirst($reservation->status) }}</td>
                                     <td>
                                         @if($reservation->mealPackage)
-                                            <a href="{{ route('customer.meal.details', $reservation->meal_package_id) }}">
+                                            <a href="{{ route('meal.details', $reservation->meal_package_id) }}">
                                                 {{ $reservation->mealPackage->name }}
                                             </a>
-                                            
                                         @else
                                             <em>No Meal Package</em>
                                         @endif
@@ -140,6 +152,7 @@
                                     <td class="status {{ $reservation->deposit_status ?? 'no-deposit' }}">
                                         {{ ucfirst($reservation->deposit_status ?? 'No Deposit') }}
                                     </td>
+                                    
                                     <td>
                                         @if ($reservation->status === 'pending')
                                             <form action="{{ route('customer.reservation.cancel', $reservation->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">

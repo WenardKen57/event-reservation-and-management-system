@@ -21,7 +21,7 @@ class MealPackageController extends Controller
     public function show($id)
     {
         $mealPackage = MealPackage::with('inclusions')->findOrFail($id);
-        return view('customer.meal.package-details', compact('mealPackage'));
+        return view('meal-package-details', compact('mealPackage'));
     }
 
 

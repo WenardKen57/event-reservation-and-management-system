@@ -20,7 +20,7 @@
                 @endforeach
             </ul>
 
-            <a href="{{ route('customer.event.packages') }}" class="back-button">Back to Packages</a>
+            <a href="{{ route('event.packages') }}" class="back-button">Back to Packages</a>
             <a href="{{ route('customer.dashboard') }}" class="back-button">Back to Dashboard</a>
         </div>
     </div>
