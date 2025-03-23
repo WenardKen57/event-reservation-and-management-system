@@ -120,7 +120,7 @@
                                     <td>{{ $reservation->event_time }}</td>
                                     <td>{{ $reservation->event_location }}</td>
                                     <td>
-                                        <a href="{{ route('customer.package.details', $reservation->event_package_id) }}">
+                                        <a href="{{ route('package.details', $reservation->event_package_id) }}">
                                             {{ $reservation->package->package_name }}
                                         </a>
                                     </td>

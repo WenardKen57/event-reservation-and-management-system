@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\GCashSettingController;
 use App\Http\Controllers\Customer\CheckoutController;
 use App\Http\Controllers\Customer\PaymentProofController;
 use App\Http\Controllers\Admin\PaymentVerificationController;
+use App\Http\Controllers\AdminRentalItemController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -95,6 +96,14 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/admin/payment-verifications/{id}/verify', [PaymentVerificationController::class, 'verify'])->name('admin.verify-payment');
     Route::put('/admin/payment-verifications/{id}/reject', [PaymentVerificationController::class, 'reject'])->name('admin.reject-payment');
 
+
+
+    Route::get('/admin/rentals', [AdminRentalItemController::class, 'index'])->name('admin.rentals.index');
+    Route::get('/admin/rentals/create', [AdminRentalItemController::class, 'create'])->name('admin.rentals.create');
+    Route::post('/admin/rentals', [AdminRentalItemController::class, 'store'])->name('admin.rentals.store');
+    Route::get('/admin/rentals/{rentalItem}/edit', [AdminRentalItemController::class, 'edit'])->name('admin.rentals.edit');
+    Route::put('/admin/rentals/{rentalItem}', [AdminRentalItemController::class, 'update'])->name('admin.rentals.update');
+    Route::delete('/admin/rentals/{rentalItem}', [AdminRentalItemController::class, 'destroy'])->name('admin.rentals.destroy');
 });
 
 Route::middleware(['auth', 'role:customer'])->group(function () {
